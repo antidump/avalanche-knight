@@ -20,6 +20,8 @@ const initialEvent = (event : ProgramEvent) : void => {
     event.input.addAction("j", ["ArrowUp", "KeyW"])
     event.input.addAction("t", ["Space"])
     event.input.addAction("p", ["Enter"])
+    event.input.addAction("login", ["KeyL"])
+    event.input.addAction("leaderboard", ["KeyB"])
 
     event.scenes.addScene("g", new Game(event));
     event.scenes.addScene("a", new AudioIntro());

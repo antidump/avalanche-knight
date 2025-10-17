@@ -299,22 +299,22 @@ const generateSky = (c : CanvasRenderingContext2D,
 const generateGameOverTextBase = (c : CanvasRenderingContext2D, 
     width : number, height : number, bmp : (Bitmap) []) : void => {
 
-    c.font = "bold 18px Arial";
+    c.font = "bold 14px Arial";
     c.textAlign = "center";
 
     c.fillStyle = "#ffffff";
-    c.fillText("Game Over!", width/2, height - 2);
+    c.fillText("Avalanche Crash", width/2, height - 2);
 }
 
 
 const generateLogoBase = (c : CanvasRenderingContext2D, 
     width : number, height : number, bmp : (Bitmap) []) : void => {
 
-    c.font = "bold 19px Arial";
+    c.font = "bold 14px Arial";
     c.textAlign = "center";
 
-    c.fillStyle = "#ffffff";
-    c.fillText("Knight Dreams", width/2, height - 6);
+    c.fillStyle = "#E84142";
+    c.fillText("Avalanche Knight", width/2, height - 6);
 }
 
 
@@ -484,7 +484,7 @@ export const generateAssets = (event : ProgramEvent) : void => {
         [85, 0, 0]);
 
     const logoBase = BitmapGenerator.createCustom(132, 24, [], generateLogoBase,
-        [255, 85, 0]);
+        [232, 65, 66]);
     const logoDark = BitmapGenerator.createCustom(132, 24, [], generateLogoBase,
         [85, 0, 0]);    
 

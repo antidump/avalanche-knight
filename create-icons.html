@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Icons</title>
+</head>
+<body>
+    <h1>Creating Game Icons</h1>
+    
+    <canvas id="iconCanvas" width="100" height="100" style="border: 1px solid black;"></canvas>
+    <canvas id="coverCanvas" width="630" height="500" style="border: 1px solid black;"></canvas>
+    
+    <br><br>
+    <button onclick="createIcon()">Create 100x100 Icon</button>
+    <button onclick="createCover()">Create 630x500 Cover</button>
+    <button onclick="downloadIcon()">Download Icon</button>
+    <button onclick="downloadCover()">Download Cover</button>
+    
+    <script>
+        function createIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Background - Avalanche theme colors
+            const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+            gradient.addColorStop(0, '#E84142'); // Avalanche Red
+            gradient.addColorStop(0.5, '#FF6B6B'); // Light Red
+            gradient.addColorStop(1, '#8B0000'); // Dark Red
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 100, 100);
+            
+            // Knight character based on actual game sprite
+            // Body (16x16 at 48,32 in sprite)
+            ctx.fillStyle = '#ffaa55'; // Brown body
+            ctx.fillRect(35, 40, 30, 30); // Main body
+            
+            // Head
+            ctx.fillStyle = '#ffffaa'; // Light skin
+            ctx.fillRect(42, 30, 16, 16); // Head
+            
+            // Eyes (red eyes like in game)
+            ctx.fillStyle = '#aa0000';
+            ctx.fillRect(46, 34, 2, 2);
+            ctx.fillRect(52, 34, 2, 2);
+            
+            // Legs (animated legs from sprite)
+            ctx.fillStyle = '#aa5555'; // Darker brown
+            ctx.fillRect(38, 70, 8, 20); // Left leg
+            ctx.fillRect(54, 70, 8, 20); // Right leg
+            
+            // Feather on head (like in game)
+            ctx.fillStyle = '#ffff00';
+            ctx.fillRect(47, 25, 6, 8);
+            
+            // Spear (from game)
+            ctx.fillStyle = '#aa5500'; // Brown spear
+            ctx.fillRect(65, 35, 4, 30);
+            ctx.fillStyle = '#aaaaaa'; // Silver tip
+            ctx.fillRect(66, 30, 2, 8);
+            
+            // Snow/avalanche effect
+            ctx.fillStyle = '#FFFFFF';
+            for(let i = 0; i < 15; i++) {
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                ctx.fillRect(x, y, 2, 2);
+            }
+            
+            // Text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 8px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('AVALANCHE', 50, 95);
+        }
+        
+        function createCover() {
+            const canvas = document.getElementById('coverCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 630, 500);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(0.3, '#16213e');
+            gradient.addColorStop(0.7, '#0f3460');
+            gradient.addColorStop(1, '#533483');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 630, 500);
+            
+            // Mountain silhouette
+            ctx.fillStyle = '#2d3748';
+            ctx.beginPath();
+            ctx.moveTo(0, 300);
+            ctx.lineTo(150, 150);
+            ctx.lineTo(300, 200);
+            ctx.lineTo(450, 100);
+            ctx.lineTo(630, 180);
+            ctx.lineTo(630, 500);
+            ctx.lineTo(0, 500);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Snow caps
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.moveTo(140, 150);
+            ctx.lineTo(160, 130);
+            ctx.lineTo(180, 150);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.moveTo(440, 100);
+            ctx.lineTo(460, 80);
+            ctx.lineTo(480, 100);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Knight character (larger, based on actual game sprite)
+            // Body (16x16 at 48,32 in sprite)
+            ctx.fillStyle = '#ffaa55'; // Brown body
+            ctx.fillRect(250, 200, 120, 120); // Main body
+            
+            // Head
+            ctx.fillStyle = '#ffffaa'; // Light skin
+            ctx.fillRect(280, 160, 60, 60); // Head
+            
+            // Eyes (red eyes like in game)
+            ctx.fillStyle = '#aa0000';
+            ctx.fillRect(295, 175, 8, 8);
+            ctx.fillRect(317, 175, 8, 8);
+            
+            // Legs (animated legs from sprite)
+            ctx.fillStyle = '#aa5555'; // Darker brown
+            ctx.fillRect(270, 320, 30, 80); // Left leg
+            ctx.fillRect(320, 320, 30, 80); // Right leg
+            
+            // Feather on head (like in game)
+            ctx.fillStyle = '#ffff00';
+            ctx.fillRect(290, 140, 20, 30);
+            
+            // Spear (from game)
+            ctx.fillStyle = '#aa5500'; // Brown spear
+            ctx.fillRect(370, 180, 12, 120);
+            ctx.fillStyle = '#aaaaaa'; // Silver tip
+            ctx.fillRect(372, 160, 8, 30);
+            
+            // Game title
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.strokeText('AVALANCHE KNIGHT', 315, 100);
+            ctx.fillText('AVALANCHE KNIGHT', 315, 100);
+            
+            // Subtitle
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = '#FFD700';
+            ctx.fillText('Endless Runner Arcade', 315, 130);
+            
+            // Avalanche GameLoop branding
+            ctx.font = 'bold 18px Arial';
+            ctx.fillStyle = '#E84142';
+            ctx.fillText('Avalanche GameLoop Hackathon 2025', 315, 480);
+            
+            // Snow particles
+            ctx.fillStyle = '#FFFFFF';
+            for(let i = 0; i < 50; i++) {
+                const x = Math.random() * 630;
+                const y = Math.random() * 500;
+                const size = Math.random() * 3 + 1;
+                ctx.fillRect(x, y, size, size);
+            }
+        }
+        
+        function downloadIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const link = document.createElement('a');
+            link.download = 'game-icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadCover() {
+            const canvas = document.getElementById('coverCanvas');
+            const link = document.createElement('a');
+            link.download = 'game-cover.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Auto-create on load
+        window.onload = function() {
+            createIcon();
+            createCover();
+        };
+    </script>
+</body>
+</html>

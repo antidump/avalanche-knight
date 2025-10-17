@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Callback - Avalanche Knight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1D2B53;
+            color: #F0F0F0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #E84142;
+        }
+        .loading {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #E84142;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Avalanche Knight</h1>
+        <div class="loading">Processing authentication...</div>
+        <div class="spinner"></div>
+        <p>Please wait while we complete your login.</p>
+        <p><small>You will be redirected back to the game shortly.</small></p>
+    </div>
+
+    <script>
+        // Auto-redirect back to the game after a short delay
+        setTimeout(() => {
+            // Remove the /auth/callback from the current URL and redirect
+            const baseUrl = window.location.origin + window.location.pathname.replace('/auth/callback', '');
+            window.location.href = baseUrl;
+        }, 3000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
