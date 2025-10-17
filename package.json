@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "npx tsc && python -m http.server 8000",
-    "vercel-build": "npx tsc"
+    "vercel-build": "npx tsc && echo 'Build completed'"
   },
   "dependencies": {
     "typescript": "^5.9.3"
