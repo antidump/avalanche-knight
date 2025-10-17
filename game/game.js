@@ -158,6 +158,13 @@ export class Game {
         canvas.drawText(bmpFontWhite, "+= OR W: JUMP/FLY", 28, 72);
         canvas.drawText(bmpFontWhite, "+SPACE: ATTACK", 28, 82);
         canvas.drawText(bmpFontWhite, "+ENTER: PAUSE", 28, 92);
+        canvas.drawText(bmpFontWhite, "+L: LOGIN/LOGOUT", 28, 102);
+        canvas.drawText(bmpFontWhite, "+B: LEADERBOARD", 28, 112);
+        // Funtico Status
+        const funticoStatus = this.isLoggedIn() ?
+            `LOGGED IN: ${this.getCurrentUsername()}` :
+            "PRESS L TO LOGIN";
+        canvas.drawText(bmpFont, funticoStatus, w / 2, 130, -1, 0, 1 /* TextAlign.Center */);
         if (this.enterTimer >= 0.5) {
             canvas.drawText(bmpFont, "PRESS ENTER", w / 2, h - 28, -1, 0, 1 /* TextAlign.Center */);
         }
@@ -266,6 +273,16 @@ export class Game {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.titleScreenActive = false;
             }
+            // Handle Funtico login/logout
+            if (event.input.getAction("login") == 3 /* InputState.Pressed */) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.handleLogin();
+            }
+            // Handle leaderboard
+            if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.showLeaderboard = !this.showLeaderboard;
+            }
             return;
         }
         if (!this.gameStarted) {
@@ -337,6 +354,10 @@ export class Game {
         }
         if (this.titleScreenActive) {
             this.drawTitleScreen(canvas, assets);
+            // Draw leaderboard if active
+            if (this.showLeaderboard) {
+                this.drawLeaderboard(canvas, assets);
+            }
         }
         this.drawTransition(canvas);
         //canvas.moveTo();

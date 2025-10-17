@@ -249,6 +249,14 @@ export class Game implements Scene {
         canvas.drawText(bmpFontWhite, "+= OR W: JUMP/FLY", 28, 72);
         canvas.drawText(bmpFontWhite, "+SPACE: ATTACK", 28, 82);
         canvas.drawText(bmpFontWhite, "+ENTER: PAUSE", 28, 92);
+        canvas.drawText(bmpFontWhite, "+L: LOGIN/LOGOUT", 28, 102);
+        canvas.drawText(bmpFontWhite, "+B: LEADERBOARD", 28, 112);
+
+        // Funtico Status
+        const funticoStatus = this.isLoggedIn() ? 
+            `LOGGED IN: ${this.getCurrentUsername()}` : 
+            "PRESS L TO LOGIN";
+        canvas.drawText(bmpFont, funticoStatus, w/2, 130, -1, 0, TextAlign.Center);
 
         if (this.enterTimer >= 0.5) {
             
@@ -403,6 +411,19 @@ export class Game implements Scene {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.titleScreenActive = false;
             }
+            
+            // Handle Funtico login/logout
+            if (event.input.getAction("login") == InputState.Pressed) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.handleLogin();
+            }
+            
+            // Handle leaderboard
+            if (event.input.getAction("leaderboard") == InputState.Pressed) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.showLeaderboard = !this.showLeaderboard;
+            }
+            
             return;
         }
 
@@ -513,6 +534,11 @@ export class Game implements Scene {
         if (this.titleScreenActive) {
 
             this.drawTitleScreen(canvas, assets);
+            
+            // Draw leaderboard if active
+            if (this.showLeaderboard) {
+                this.drawLeaderboard(canvas, assets);
+            }
         }
 
         this.drawTransition(canvas);

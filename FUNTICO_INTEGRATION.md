@@ -1,5 +1,21 @@
 # 🎮 Funtico GameLoop SDK Integration - Avalanche Knight
 
+## ⚠️ **IMPORTANT: Redirect URI Registration Required**
+
+**Current Issue**: The `redirect_uri` parameter is not registered with Funtico for this client ID.
+
+**Error**: `The 'redirect_uri' parameter does not match any of the OAuth 2.0 Client's pre-registered redirect urls.`
+
+**Solution**: Contact Funtico support to register the following URLs:
+- **Email**: `gameloop@funtico.com` or `support@funtico.com`
+- **URLs to register**:
+  - `http://localhost:8002` (for local development)
+  - `https://avalanche-knight.vercel.app` (for production)
+
+---
+
+## 🎮 Funtico GameLoop SDK Integration - Avalanche Knight
+
 ## 📋 Overview
 
 This document explains how Funtico GameLoop SDK has been integrated into the Avalanche Knight game for the Avalanche GameLoop hackathon.
