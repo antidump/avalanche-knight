@@ -1,5 +1,18 @@
 {
+  "name": "avalanche-knight",
+  "version": "1.0.0",
+  "description": "Avalanche Knight - Endless runner game with Funtico SDK integration",
+  "main": "index.html",
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "npx tsc && python -m http.server 8000",
+    "vercel-build": "npx tsc"
+  },
   "dependencies": {
     "typescript": "^5.9.3"
-  }
+  },
+  "devDependencies": {},
+  "keywords": ["game", "avalanche", "gameloop", "funtico"],
+  "author": "Modolo-oss",
+  "license": "MIT"
 }
