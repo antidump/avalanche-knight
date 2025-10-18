@@ -15,10 +15,10 @@ export class FunticoManager {
             // Initialize SDK with smart environment detection
             const isFunticoHosted = window.location.hostname.includes('funtico.com');
             const isProduction = window.location.hostname.includes('vercel.app') || isFunticoHosted;
-            // Check URL parameter for environment override
+            // Check URL parameter for environment override - LOCK ENVIRONMENT
             const urlParams = new URLSearchParams(window.location.search);
             const envOverride = urlParams.get('env');
-            const useProduction = envOverride === 'production' || (envOverride !== 'sandbox' && isProduction);
+            const useProduction = envOverride === 'production';
             this.sdk = new window.FunticoSDK({
                 authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
                 env: useProduction ? 'production' : 'sandbox',
