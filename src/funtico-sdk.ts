@@ -23,13 +23,18 @@ export class FunticoManager {
 
     private initializeSDK(): void {
         try {
-            // Initialize SDK with smart auto-login detection
+            // Initialize SDK with smart environment detection
             const isFunticoHosted = window.location.hostname.includes('funtico.com');
             const isProduction = window.location.hostname.includes('vercel.app') || isFunticoHosted;
             
+            // Check URL parameter for environment override
+            const urlParams = new URLSearchParams(window.location.search);
+            const envOverride = urlParams.get('env');
+            const useProduction = envOverride === 'production' || (envOverride !== 'sandbox' && isProduction);
+            
             this.sdk = new (window as any).FunticoSDK({
                 authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
-                env: 'sandbox', // FORCE SANDBOX for testing
+                env: useProduction ? 'production' : 'sandbox',
                 autoLogin: isFunticoHosted // Auto-login only when hosted on Funtico
             });
             this.isInitialized = true;
@@ -37,7 +42,7 @@ export class FunticoManager {
             if (isFunticoHosted) {
                 console.log('Funtico SDK initialized successfully (AUTO LOGIN ENABLED - Funtico hosted)');
             } else {
-                console.log('Funtico SDK initialized successfully (MANUAL LOGIN ONLY - External hosting)');
+                console.log(`Funtico SDK initialized successfully (MANUAL LOGIN ONLY - External hosting, env: ${useProduction ? 'production' : 'sandbox'})`);
             }
         } catch (error) {
             console.error('Failed to initialize Funtico SDK:', error);
