@@ -1,0 +1,60 @@
+* [33m6253d68[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add Funtico OAuth callback page to handle login redirect
+* [33mc6848a9[m Fix Funtico SDK callback URL to use /auth/callback path
+* [33m562df98[m feat: Complete Funtico GameLoop SDK integration
+* [33mf7467ab[m Fix 404 error: Move JS files to root directory and update index.html path
+* [33m0b83c47[m Add vercel.json with explicit build configuration to fix 404 error
+* [33m15b8a55[m Fix .vercelignore: Include src/ and tsconfig.json for TypeScript compilation
+* [33m6329376[m Fix TypeScript compilation: Update tsconfig.json with proper include/exclude patterns
+* [33m08ebc83[m Fix Vercel deployment: Remove vercel.json, update package.json with build scripts
+* [33m24ba5a9[m Initial commit: Avalanche Knight with mobile touch controls and Funtico SDK integration
+* [33md25009c[m Typo in README
+* [33m20efaf9[m Improved readme
+* [33ma9de3ee[m Fixing formatting errors in the README
+* [33m25adbfc[m Some last minute changes & README
+* [33mdf3aea4[m Mostly done
+* [33mf648933[m Some small missing features and stuff
+* [33m7c30bbf[m Reverting some changes because I was being dumb
+* [33mec7e466[m Saving even more bytes
+* [33m0a44f7e[m Gotta save some bytes (again)
+* [33mb99f659[m Less aggressive audio
+* [33mcbdcdb5[m Dust balls & extra bytes yay
+* [33mba41b88[m Time based enemy generation
+* [33me6628ab[m Improved enemies & palm trees
+* [33me5b2263[m Remaining enemies, at least base behavior
+* [33m204b672[m Enemy animation & behavior for the first two enemies
+* [33m5194d71[m Some tweaking & bouncy static slimes
+* [33m1aebbf8[m Enemy faves & slightly improved object generation
+* [33m43e7169[m Spear and stuff
+* [33m4b9b16b[m Early enemies
+* [33m3910a38[m Saving some bytes & repeating gem generation
+* [33mfaa1139[m Sound effects & gems
+* [33m25863cc[m Some enemy sprites
+* [33m9102910[m Minified index.html and early title screen
+* [33m9025699[m Epic byte reduction. Also some features, maybe
+* [33m462ee72[m Death animation & game over screen
+* [33mad9405a[m Dying (without animation yet)
+* [33m29e2330[m Pause text and nothing else!
+* [33m3a515f2[m Spikes & propeller
+* [33m7a42d5d[m More decorations; simplified UI code; sky
+* [33mb04cbaf[m Refactored ground genereation
+* [33mc5d3677[m Palmtrees added
+* [33m62c43f7[m Player sprite & some background stuff
+* [33ma55786a[m Floating pltaforms added
+* [33m0019dfe[m Even better background generation
+* [33m27dd9ca[m Improved mushrooms & floor collisions
+* [33mc6d12ca[m Refactoring ground generation; mushrooms added
+* [33m10ce450[m Meh
+* [33m62f2c5c[m I'm starting to feel mildly frustrated with the ground gen
+* [33ma8a00c8[m Slightly improved ground generation; better(?) camear
+* [33m50687b8[m Properly working collisions
+* [33mf06f4e4[m Fixed ground generation
+* [33m55e2401[m Refactoring and breaking everything again
+* [33m3447b2d[m Slightly less broken collisions
+* [33m74e9e37[m Player object & broken collisions
+* [33m4bfc97e[m Slopes & mushrooms
+* [33m7509e94[m Slightly improved terrain generation & rendering
+* [33meed0984[m More early terrain stuff
+* [33mc410fc1[m Early terrain test
+* [33mfd7a9b9[m More tile generation
+* [33me3df3a3[m .gitignore added
+* [33m274fa65[m Initial

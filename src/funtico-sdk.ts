@@ -53,7 +53,7 @@ export class FunticoManager {
             // Try real Funtico login first
             // Use specific callback URL that might be registered
             const baseUrl = window.location.origin;
-            const callbackUrl = `${baseUrl}/auth/callback`;
+            const callbackUrl = `${baseUrl}/callback.html`;
             console.log('Attempting login with callback:', callbackUrl);
             
             await this.sdk.signInWithFuntico(callbackUrl);
