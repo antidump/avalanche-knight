@@ -93,7 +93,7 @@
     </script>
     
     <script>
-        // Handle Funtico OAuth callback
+        // Handle Funtico OAuth callback - NO AUTO LOGIN
         window.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
@@ -101,12 +101,12 @@
             
             if (code) {
                 console.log('Funtico login successful! Authorization code:', code);
-                // Wait for FunticoManager to be available
-                setTimeout(async () => {
-                    if (window.funticoManager) {
-                        await window.funticoManager.handleCallback();
-                    }
-                }, 1000);
+                // DISABLE AUTO LOGIN - only handle callback when user manually logs in
+                // setTimeout(async () => {
+                //     if (window.funticoManager) {
+                //         await window.funticoManager.handleCallback();
+                //     }
+                // }, 1000);
             } else if (error) {
                 console.error('Funtico login error:', error);
                 // Remove error parameters from URL
