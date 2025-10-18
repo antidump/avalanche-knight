@@ -82,11 +82,16 @@ export class FunticoManager {
         }
     }
 
-    // Get current user information - according to official documentation
+    // Get current user information - NO AUTO LOGIN
     public async getUserInfo(): Promise<any> {
         if (!this.isReady()) {
             console.error('Funtico SDK not initialized');
             return null;
+        }
+
+        // Return cached user info if available
+        if (this.userInfo) {
+            return this.userInfo;
         }
 
         try {
