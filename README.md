@@ -1,4 +1,116 @@
-## Avalanche Knight
+# 🎮 Avalanche Knight - Funtico GameLoop Integration
+
+Endless runner game with Funtico SDK integration for tournaments and leaderboards.
+
+## 🚀 Quick Start
+
+1. **Clone repository:**
+   ```bash
+   git clone <repository-url>
+   cd avalanche-knight
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. **Build and run:**
+   ```bash
+   npm run build
+   npm run dev
+   ```
+
+## ⚙️ Environment Configuration
+
+### `.env` File
+```bash
+# Environment: 'sandbox' or 'production'
+FUNTICO_ENV=sandbox
+
+# Redirect URL for OAuth callback
+FUNTICO_REDIRECT_URL=https://your-app.vercel.app/
+
+# Funtico Client ID
+FUNTICO_CLIENT_ID=gl-avalanche-knight
+
+# Auto-login setting (true/false)
+FUNTICO_AUTO_LOGIN=false
+
+# Funtico API endpoints
+FUNTICO_AUTH_URL=https://staging.login.funtico.com
+FUNTICO_API_URL=https://api.funtico.com
+```
+
+### 🔄 Swappable Redirect URLs
+
+**For Vercel Deployment:**
+```bash
+FUNTICO_REDIRECT_URL=https://avalanche-knight.vercel.app/
+```
+
+**For Funtico Hosting:**
+```bash
+FUNTICO_REDIRECT_URL=https://games.funtico.com/avalanche-knight/auth/callback
+```
+
+**For Local Development:**
+```bash
+FUNTICO_REDIRECT_URL=http://localhost:8000/
+```
+
+## 🎯 Deployment
+
+### Vercel
+1. Update `vercel.json` with your environment variables
+2. Deploy: `vercel --prod`
+
+### Funtico Platform
+1. Update `.env` with Funtico redirect URL
+2. Build: `npm run build`
+3. Send build files to Funtico team
+
+## 🎮 Game Controls
+
+- **Arrow Keys**: Move player
+- **L**: Login to Funtico
+- **B**: Back to menu
+- **Space**: Jump/Start game
+
+## 📊 Features
+
+- ✅ Funtico SDK integration
+- ✅ OAuth2 authentication
+- ✅ Score submission to leaderboard
+- ✅ Real-time leaderboard display
+- ✅ Swappable redirect URLs
+- ✅ Environment-based configuration
+
+## 🔧 Troubleshooting
+
+### Login Issues
+- Check redirect URL in `.env`
+- Verify client ID with Funtico support
+- Clear browser cache and cookies
+
+### Build Issues
+- Run `npm run build` to compile TypeScript
+- Check `tsconfig.json` configuration
+
+## 📞 Support
+
+- **Funtico Support**: gameloop@funtico.com
+- **Documentation**: https://js.demo.gameloop.funtico.com/
+
+------
+
+## Original Game Info
 
 Avalanche Knight is a tiny arcade endless runner action game themed for Avalanche GameLoop hackathon. Originally made for [js13k competition (2023)](/https://js13kgames.com/).
 

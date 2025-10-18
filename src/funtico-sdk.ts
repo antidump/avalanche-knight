@@ -23,6 +23,9 @@ export class FunticoManager {
 
     private initializeSDK(): void {
         try {
+            // Get configuration from environment variables or fallback to defaults
+            const config = this.getConfig();
+            
             // Initialize SDK with smart environment detection
             const isFunticoHosted = window.location.hostname.includes('funtico.com');
             const isProduction = window.location.hostname.includes('vercel.app') || isFunticoHosted;
@@ -30,12 +33,12 @@ export class FunticoManager {
             // Check URL parameter for environment override - LOCK ENVIRONMENT
             const urlParams = new URLSearchParams(window.location.search);
             const envOverride = urlParams.get('env');
-            const useProduction = envOverride === 'production';
+            const useProduction = envOverride === 'production' || config.env === 'production';
             
             this.sdk = new (window as any).FunticoSDK({
-                authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
+                authClientId: config.clientId,
                 env: useProduction ? 'production' : 'sandbox',
-                autoLogin: isFunticoHosted // Auto-login only when hosted on Funtico
+                autoLogin: config.autoLogin || isFunticoHosted
             });
             this.isInitialized = true;
             
@@ -48,6 +51,26 @@ export class FunticoManager {
             console.error('Failed to initialize Funtico SDK:', error);
             this.isInitialized = false;
         }
+    }
+
+    // Get configuration from environment variables or fallback to defaults
+    private getConfig(): any {
+        // Try to get from environment variables (for build-time)
+        const env = (window as any).process?.env?.FUNTICO_ENV || 'sandbox';
+        const redirectUrl = (window as any).process?.env?.FUNTICO_REDIRECT_URL || window.location.origin + '/';
+        const clientId = (window as any).process?.env?.FUNTICO_CLIENT_ID || 'gl-avalanche-knight';
+        const autoLogin = (window as any).process?.env?.FUNTICO_AUTO_LOGIN === 'true' || false;
+        const authUrl = (window as any).process?.env?.FUNTICO_AUTH_URL || 'https://staging.login.funtico.com';
+        const apiUrl = (window as any).process?.env?.FUNTICO_API_URL || 'https://api.funtico.com';
+
+        return {
+            env,
+            redirectUrl,
+            clientId,
+            autoLogin,
+            authUrl,
+            apiUrl
+        };
     }
 
     // Check if SDK is ready to use
@@ -79,9 +102,11 @@ export class FunticoManager {
         }
 
         try {
-            // Use root URL as callback - handle OAuth in index.html
-            const baseUrl = window.location.origin;
-            const callbackUrl = `${baseUrl}/`;
+            // Get configuration
+            const config = this.getConfig();
+            
+            // Use configured redirect URL
+            const callbackUrl = config.redirectUrl;
             console.log('Attempting login with callback:', callbackUrl);
             
             // Try different methods to trigger login
@@ -96,7 +121,7 @@ export class FunticoManager {
                 console.log('signInWithFuntico failed:', signInError);
                 
                 // Method 2: Try direct redirect to Funtico login
-                const loginUrl = `https://staging.login.funtico.com/?client_logo=&client_name=Avalanche+Knight&client_type=game&go_back_url=${encodeURIComponent(callbackUrl)}`;
+                const loginUrl = `${config.authUrl}/?client_logo=&client_name=Avalanche+Knight&client_type=game&go_back_url=${encodeURIComponent(callbackUrl)}`;
                 console.log('Redirecting to Funtico login/register:', loginUrl);
                 
                 // Show info about registration

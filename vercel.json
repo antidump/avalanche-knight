@@ -1,5 +1,12 @@
 {
-  "buildCommand": "npx tsc",
-  "outputDirectory": ".",
-  "installCommand": "npm install"
+  "env": {
+    "FUNTICO_ENV": "sandbox",
+    "FUNTICO_REDIRECT_URL": "https://avalanche-knight.vercel.app/",
+    "FUNTICO_CLIENT_ID": "gl-avalanche-knight",
+    "FUNTICO_AUTO_LOGIN": "false",
+    "FUNTICO_AUTH_URL": "https://staging.login.funtico.com",
+    "FUNTICO_API_URL": "https://api.funtico.com"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "build"
 }

@@ -158,6 +158,13 @@ export class Game {
         canvas.drawText(bmpFontWhite, "+= OR W: JUMP/FLY", 28, 72);
         canvas.drawText(bmpFontWhite, "+SPACE: ATTACK", 28, 82);
         canvas.drawText(bmpFontWhite, "+ENTER: PAUSE", 28, 92);
+        canvas.drawText(bmpFontWhite, "+L: LOGIN/LOGOUT", 28, 102);
+        canvas.drawText(bmpFontWhite, "+B: LEADERBOARD", 28, 112);
+        // Funtico Status
+        const funticoStatus = this.isLoggedIn() ?
+            `LOGGED IN: ${this.getCurrentUsername()}` :
+            "PRESS L TO LOGIN";
+        canvas.drawText(bmpFont, funticoStatus, w / 2, 130, -1, 0, 1 /* TextAlign.Center */);
         if (this.enterTimer >= 0.5) {
             canvas.drawText(bmpFont, "PRESS ENTER", w / 2, h - 28, -1, 0, 1 /* TextAlign.Center */);
         }
@@ -182,38 +189,32 @@ export class Game {
         canvas.fillRect();
         // Title
         canvas.drawText(bmpFontYellow, "LEADERBOARD", w / 2, 20, -1, 0, 1 /* TextAlign.Center */);
-        // Mock leaderboard data
-        const mockLeaderboard = [
-            { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
-            { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
-            { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
-            { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
-            { rank: 5, name: "FUNTICO_CHAMP", score: 10340 },
-            { rank: 6, name: "HIGH_SCORER", score: 9870 },
-            { rank: 7, name: "RETRO_GAMER", score: 8920 },
-            { rank: 8, name: "PIXEL_MASTER", score: 7840 },
-            { rank: 9, name: "ARCADE_LEGEND", score: 6760 },
-            { rank: 10, name: "NEW_PLAYER", score: 5430 }
-        ];
-        // Draw leaderboard entries
-        let y = 40;
-        for (const entry of mockLeaderboard) {
-            const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
-            const nameText = entry.name;
-            const scoreText = entry.score.toString().padStart(5, ' ');
-            // Highlight current user if logged in
-            if (this.isLoggedIn() && entry.name === this.getCurrentUsername()) {
-                canvas.fillColor("#ffff0033");
-                canvas.fillRect(20, y - 2, w - 40, 10);
+        // Get real leaderboard data from Funtico
+        this.getFunticoLeaderboard().then(leaderboard => {
+            // Draw leaderboard entries
+            let y = 40;
+            for (const entry of leaderboard) {
+                const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
+                const nameText = entry.name;
+                const scoreText = entry.score.toString().padStart(5, ' ');
+                // Highlight current user if logged in
+                if (this.isLoggedIn() && entry.name === this.getCurrentUsername()) {
+                    canvas.fillColor("#ffff0033");
+                    canvas.fillRect(20, y - 2, w - 40, 10);
+                }
+                canvas.drawText(bmpFontWhite, rankText, 25, y);
+                canvas.drawText(bmpFontWhite, nameText, 50, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                y += 10;
             }
-            canvas.drawText(bmpFontWhite, rankText, 25, y);
-            canvas.drawText(bmpFontWhite, nameText, 50, y);
-            canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-            y += 10;
-        }
-        // Instructions
-        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w / 2, h - 20, -1, 0, 1 /* TextAlign.Center */);
-        canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w / 2, h - 10, -1, 0, 1 /* TextAlign.Center */);
+            // Instructions
+            canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w / 2, h - 20, -1, 0, 1 /* TextAlign.Center */);
+            canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w / 2, h - 10, -1, 0, 1 /* TextAlign.Center */);
+        }).catch(error => {
+            console.error('Error loading leaderboard:', error);
+            // Show error message
+            canvas.drawText(bmpFontYellow, "ERROR LOADING LEADERBOARD", w / 2, h / 2, -1, 0, 1 /* TextAlign.Center */);
+        });
     }
     drawTransition(canvas) {
         if (this.transitionTimer <= 0)
@@ -265,6 +266,16 @@ export class Game {
             if (event.input.getAction("s") == 3 /* InputState.Pressed */) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.titleScreenActive = false;
+            }
+            // Handle Funtico login/logout
+            if (event.input.getAction("login") == 3 /* InputState.Pressed */) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.handleLogin();
+            }
+            // Handle leaderboard
+            if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.showLeaderboard = !this.showLeaderboard;
             }
             return;
         }
@@ -337,12 +348,44 @@ export class Game {
         }
         if (this.titleScreenActive) {
             this.drawTitleScreen(canvas, assets);
+            // Draw leaderboard if active
+            if (this.showLeaderboard) {
+                this.drawLeaderboard(canvas, assets);
+            }
         }
         this.drawTransition(canvas);
         //canvas.moveTo();
         //canvas.drawBitmap(assets.getBitmap("t"));
     }
     // Funtico SDK Integration Methods
+    async getFunticoLeaderboard() {
+        if (!funticoManager.isReady()) {
+            console.log('Funtico SDK not ready, using fallback leaderboard');
+            return [
+                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
+                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
+                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
+                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
+                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
+            ];
+        }
+        try {
+            const leaderboard = await funticoManager.getLeaderboard();
+            console.log('Real leaderboard data from Funtico:', leaderboard);
+            return leaderboard;
+        }
+        catch (error) {
+            console.error('Failed to get Funtico leaderboard:', error);
+            // Fallback to mock data
+            return [
+                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
+                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
+                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
+                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
+                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
+            ];
+        }
+    }
     async submitScoreToFuntico(score) {
         if (funticoManager.isReady() && funticoManager.isAuthenticated()) {
             try {
