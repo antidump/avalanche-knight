@@ -30,14 +30,13 @@ export class FunticoManager {
     isReady() {
         return this.isInitialized && this.sdk !== null;
     }
-    // Start authentication flow - WORKAROUND for redirect_uri issue
+    // Start authentication flow - MANUAL LOGIN ONLY
     async signIn() {
         if (!this.isReady()) {
             console.error('Funtico SDK not initialized');
             return false;
         }
         try {
-            // Try real Funtico login first
             // Use root URL as callback - handle OAuth in index.html
             const baseUrl = window.location.origin;
             const callbackUrl = `${baseUrl}/`;
@@ -143,6 +142,35 @@ export class FunticoManager {
             console.error('Sign out failed:', error);
             return false;
         }
+    }
+    // Handle OAuth callback and exchange code for token
+    async handleCallback() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        if (error) {
+            console.error('OAuth error:', error);
+            return false;
+        }
+        if (code) {
+            console.log('Authorization code received:', code);
+            try {
+                // Exchange code for token using Funtico SDK
+                const tokenResponse = await this.sdk.exchangeCodeForToken(code);
+                console.log('Token exchange successful:', tokenResponse);
+                // Get user info
+                this.userInfo = await this.sdk.getUserInfo();
+                console.log('User info:', this.userInfo);
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return true;
+            }
+            catch (error) {
+                console.error('Token exchange failed:', error);
+                return false;
+            }
+        }
+        return false;
     }
     // Check if user is authenticated
     isAuthenticated() {
