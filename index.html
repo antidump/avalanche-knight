@@ -92,6 +92,24 @@
         }
     </script>
     
+    <script>
+        // Handle Funtico OAuth callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+        
+        if (code) {
+            console.log('Funtico login successful! Authorization code:', code);
+            // Remove callback parameters from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (error) {
+            console.error('Funtico login error:', error);
+            // Remove error parameters from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+    
     <script src="main.js" type="module"></script>
 </body>
 </html>
