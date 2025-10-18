@@ -23,15 +23,22 @@ export class FunticoManager {
 
     private initializeSDK(): void {
         try {
-            // Initialize SDK with sandbox environment for development
-            // TODO: Replace 'your-client-id' with actual client ID from Funtico
+            // Initialize SDK with smart auto-login detection
+            const isFunticoHosted = window.location.hostname.includes('funtico.com');
+            const isProduction = window.location.hostname.includes('vercel.app') || isFunticoHosted;
+            
             this.sdk = new (window as any).FunticoSDK({
                 authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
-                env: 'sandbox', // Use 'production' for live games
-                autoLogin: false // DISABLE AUTO LOGIN
+                env: isProduction ? 'production' : 'sandbox',
+                autoLogin: isFunticoHosted // Auto-login only when hosted on Funtico
             });
             this.isInitialized = true;
-            console.log('Funtico SDK initialized successfully (NO AUTO LOGIN)');
+            
+            if (isFunticoHosted) {
+                console.log('Funtico SDK initialized successfully (AUTO LOGIN ENABLED - Funtico hosted)');
+            } else {
+                console.log('Funtico SDK initialized successfully (MANUAL LOGIN ONLY - External hosting)');
+            }
         } catch (error) {
             console.error('Failed to initialize Funtico SDK:', error);
             this.isInitialized = false;
@@ -43,11 +50,27 @@ export class FunticoManager {
         return this.isInitialized && this.sdk !== null;
     }
 
-    // Start authentication flow - MANUAL LOGIN ONLY
+    // Start authentication flow - SMART LOGIN
     public async signIn(): Promise<boolean> {
         if (!this.isReady()) {
             console.error('Funtico SDK not initialized');
             return false;
+        }
+
+        const isFunticoHosted = window.location.hostname.includes('funtico.com');
+        
+        if (isFunticoHosted) {
+            // On Funtico platform - user should already be logged in
+            console.log('🎮 Funtico hosted - checking existing session...');
+            try {
+                this.userInfo = await this.sdk.getUserInfo();
+                if (this.userInfo) {
+                    console.log(`✅ Already logged in as: ${this.userInfo.username}`);
+                    return true;
+                }
+            } catch (error) {
+                console.log('❌ No existing session, user needs to login');
+            }
         }
 
         try {
