@@ -27,10 +27,11 @@ export class FunticoManager {
             // TODO: Replace 'your-client-id' with actual client ID from Funtico
             this.sdk = new (window as any).FunticoSDK({
                 authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
-                env: 'sandbox' // Use 'production' for live games
+                env: 'sandbox', // Use 'production' for live games
+                autoLogin: false // DISABLE AUTO LOGIN
             });
             this.isInitialized = true;
-            console.log('Funtico SDK initialized successfully');
+            console.log('Funtico SDK initialized successfully (NO AUTO LOGIN)');
         } catch (error) {
             console.error('Failed to initialize Funtico SDK:', error);
             this.isInitialized = false;
