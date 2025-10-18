@@ -74,8 +74,10 @@ export class FunticoManager {
             catch (signInError) {
                 console.log('signInWithFuntico failed:', signInError);
                 // Method 2: Try direct redirect to Funtico login
-                const loginUrl = `https://auth.funtico.com/oauth2/auth?client_id=gl-avalanche-knight&redirect_uri=${encodeURIComponent(callbackUrl)}&response_type=code&scope=openid+profile+email`;
-                console.log('Redirecting to Funtico login:', loginUrl);
+                const loginUrl = `https://staging.login.funtico.com/?client_logo=&client_name=Avalanche+Knight&client_type=game&go_back_url=${encodeURIComponent(callbackUrl)}`;
+                console.log('Redirecting to Funtico login/register:', loginUrl);
+                // Show info about registration
+                alert(`🎮 LOGIN/REGISTER FUNTICO\n\n📝 For NEW USERS:\n• Click "Sign in with Google/X/Telegram/Discord/Twitch"\n• Then click "Create account" on the social platform\n\n🔑 For EXISTING USERS:\n• Use email/password or social login\n\nRedirecting to Funtico...`);
                 window.location.href = loginUrl;
                 return true;
             }
