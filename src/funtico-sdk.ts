@@ -172,7 +172,7 @@ export class FunticoManager {
         }
     }
 
-    // Handle OAuth callback and exchange code for token
+    // Handle OAuth callback and exchange code for token - NO AUTO LOGIN
     public async handleCallback(): Promise<boolean> {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
