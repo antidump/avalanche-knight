@@ -99,17 +99,9 @@
             const code = urlParams.get('code');
             const error = urlParams.get('error');
             
-            if (code) {
-                console.log('Funtico login successful! Authorization code:', code);
-                // DISABLE AUTO LOGIN - only handle callback when user manually logs in
-                // setTimeout(async () => {
-                //     if (window.funticoManager) {
-                //         await window.funticoManager.handleCallback();
-                //     }
-                // }, 1000);
-            } else if (error) {
-                console.error('Funtico login error:', error);
-                // Remove error parameters from URL
+            // ALWAYS CLEAN URL PARAMETERS TO PREVENT AUTO LOGIN
+            if (code || error) {
+                console.log('Cleaning URL parameters to prevent auto login');
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         });
