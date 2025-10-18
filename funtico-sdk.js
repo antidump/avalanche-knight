@@ -42,8 +42,22 @@ export class FunticoManager {
             const baseUrl = window.location.origin;
             const callbackUrl = `${baseUrl}/`;
             console.log('Attempting login with callback:', callbackUrl);
-            await this.sdk.signInWithFuntico(callbackUrl);
-            return true;
+            // Try different methods to trigger login
+            console.log('Available SDK methods:', Object.keys(this.sdk));
+            // Method 1: Try signInWithFuntico
+            try {
+                await this.sdk.signInWithFuntico(callbackUrl);
+                console.log('signInWithFuntico called successfully');
+                return true;
+            }
+            catch (signInError) {
+                console.log('signInWithFuntico failed:', signInError);
+                // Method 2: Try direct redirect to Funtico login
+                const loginUrl = `https://auth.funtico.com/oauth2/auth?client_id=gl-avalanche-knight&redirect_uri=${encodeURIComponent(callbackUrl)}&response_type=code&scope=openid+profile+email`;
+                console.log('Redirecting to Funtico login:', loginUrl);
+                window.location.href = loginUrl;
+                return true;
+            }
         }
         catch (error) {
             console.error('Sign in failed:', error);
