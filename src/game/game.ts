@@ -291,23 +291,11 @@ export class Game implements Scene {
         // Title
         canvas.drawText(bmpFontYellow, "LEADERBOARD", w/2, 20, -1, 0, TextAlign.Center);
 
-        // Mock leaderboard data
-        const mockLeaderboard = [
-            { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
-            { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
-            { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
-            { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
-            { rank: 5, name: "FUNTICO_CHAMP", score: 10340 },
-            { rank: 6, name: "HIGH_SCORER", score: 9870 },
-            { rank: 7, name: "RETRO_GAMER", score: 8920 },
-            { rank: 8, name: "PIXEL_MASTER", score: 7840 },
-            { rank: 9, name: "ARCADE_LEGEND", score: 6760 },
-            { rank: 10, name: "NEW_PLAYER", score: 5430 }
-        ];
-
-        // Draw leaderboard entries
-        let y = 40;
-        for (const entry of mockLeaderboard) {
+        // Get real leaderboard data from Funtico
+        this.getFunticoLeaderboard().then(leaderboard => {
+            // Draw leaderboard entries
+            let y = 40;
+            for (const entry of leaderboard) {
             const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
             const nameText = entry.name;
             const scoreText = entry.score.toString().padStart(5, ' ');
@@ -324,9 +312,14 @@ export class Game implements Scene {
             y += 10;
         }
 
-        // Instructions
-        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-        canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
+            // Instructions
+            canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
+        }).catch(error => {
+            console.error('Error loading leaderboard:', error);
+            // Show error message
+            canvas.drawText(bmpFontYellow, "ERROR LOADING LEADERBOARD", w/2, h/2, -1, 0, TextAlign.Center);
+        });
     }
 
     private drawTransition(canvas : Canvas) : void {
@@ -548,6 +541,35 @@ export class Game implements Scene {
     }
 
     // Funtico SDK Integration Methods
+    private async getFunticoLeaderboard(): Promise<any[]> {
+        if (!funticoManager.isReady()) {
+            console.log('Funtico SDK not ready, using fallback leaderboard');
+            return [
+                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
+                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
+                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
+                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
+                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
+            ];
+        }
+
+        try {
+            const leaderboard = await funticoManager.getLeaderboard();
+            console.log('Real leaderboard data from Funtico:', leaderboard);
+            return leaderboard;
+        } catch (error) {
+            console.error('Failed to get Funtico leaderboard:', error);
+            // Fallback to mock data
+            return [
+                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
+                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
+                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
+                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
+                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
+            ];
+        }
+    }
+
     private async submitScoreToFuntico(score: number): Promise<void> {
         if (funticoManager.isReady() && funticoManager.isAuthenticated()) {
             try {
