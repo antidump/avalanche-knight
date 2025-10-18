@@ -17,7 +17,7 @@ export class FunticoManager {
             const isProduction = window.location.hostname.includes('vercel.app') || isFunticoHosted;
             this.sdk = new window.FunticoSDK({
                 authClientId: 'gl-avalanche-knight', // Funtico GameLoop client ID
-                env: isProduction ? 'production' : 'sandbox',
+                env: 'sandbox', // FORCE SANDBOX for testing
                 autoLogin: isFunticoHosted // Auto-login only when hosted on Funtico
             });
             this.isInitialized = true;
