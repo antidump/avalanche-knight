@@ -8,5 +8,5 @@
     "FUNTICO_API_URL": "https://api.funtico.com"
   },
   "buildCommand": "npm run build",
-  "outputDirectory": "build"
+  "outputDirectory": "."
 }
