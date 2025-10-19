@@ -589,6 +589,13 @@ export class Game implements Scene {
             return leaderboard;
         } catch (error) {
             console.error('Failed to get Funtico leaderboard:', error);
+            
+            // Check if it's a server error
+            if (error.status === 500 || error.status === 404) {
+                console.log('❌ Funtico server error - leaderboard API not available');
+                console.log('📧 Contact Funtico support: gameloop@funtico.com');
+            }
+            
             return [];
         }
     }

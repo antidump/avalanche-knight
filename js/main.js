@@ -2,6 +2,9 @@ import { Program } from "./core/program.js";
 import { Game } from "./game/game.js";
 import { generateAssets } from "./game/assetgen.js";
 import { AudioIntro } from "./game/audiointro.js";
+import { funticoManager } from "./funtico-sdk.js";
+// Make funticoManager available globally
+window.funticoManager = funticoManager;
 const initialEvent = (event) => {
     event.audio.setGlobalVolume(0.40);
     // Yes, I had to manually shorten these names to save
