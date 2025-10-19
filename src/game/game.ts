@@ -293,24 +293,30 @@ export class Game implements Scene {
 
         // Get real leaderboard data from Funtico
         this.getFunticoLeaderboard().then(leaderboard => {
-            // Draw leaderboard entries
-            let y = 40;
-            for (const entry of leaderboard) {
-            const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
-            const nameText = entry.name;
-            const scoreText = entry.score.toString().padStart(5, ' ');
+            if (leaderboard.length === 0) {
+                // No leaderboard data available
+                canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w/2, h/2 - 10, -1, 0, TextAlign.Center);
+                canvas.drawText(bmpFontWhite, "Login to submit scores", w/2, h/2 + 5, -1, 0, TextAlign.Center);
+            } else {
+                // Draw leaderboard entries
+                let y = 40;
+                for (const entry of leaderboard) {
+                    const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
+                    const nameText = entry.name;
+                    const scoreText = entry.score.toString().padStart(5, ' ');
 
-            // Highlight current user if logged in
-            if (this.isLoggedIn() && entry.name === this.getCurrentUsername()) {
-                canvas.fillColor("#ffff0033");
-                canvas.fillRect(20, y - 2, w - 40, 10);
+                    // Highlight current user if logged in
+                    if (this.isLoggedIn() && entry.name === this.getCurrentUsername()) {
+                        canvas.fillColor("#ffff0033");
+                        canvas.fillRect(20, y - 2, w - 40, 10);
+                    }
+
+                    canvas.drawText(bmpFontWhite, rankText, 25, y);
+                    canvas.drawText(bmpFontWhite, nameText, 50, y);
+                    canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                    y += 10;
+                }
             }
-
-            canvas.drawText(bmpFontWhite, rankText, 25, y);
-            canvas.drawText(bmpFontWhite, nameText, 50, y);
-            canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-            y += 10;
-        }
 
             // Instructions
             canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
@@ -318,7 +324,12 @@ export class Game implements Scene {
         }).catch(error => {
             console.error('Error loading leaderboard:', error);
             // Show error message
-            canvas.drawText(bmpFontYellow, "ERROR LOADING LEADERBOARD", w/2, h/2, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontYellow, "ERROR LOADING LEADERBOARD", w/2, h/2 - 10, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontWhite, "Try again later", w/2, h/2 + 5, -1, 0, TextAlign.Center);
+            
+            // Instructions
+            canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
         });
     }
 
@@ -543,14 +554,8 @@ export class Game implements Scene {
     // Funtico SDK Integration Methods
     private async getFunticoLeaderboard(): Promise<any[]> {
         if (!funticoManager.isReady()) {
-            console.log('Funtico SDK not ready, using fallback leaderboard');
-            return [
-                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
-                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
-                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
-                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
-                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
-            ];
+            console.log('Funtico SDK not ready');
+            return [];
         }
 
         try {
@@ -559,14 +564,7 @@ export class Game implements Scene {
             return leaderboard;
         } catch (error) {
             console.error('Failed to get Funtico leaderboard:', error);
-            // Fallback to mock data
-            return [
-                { rank: 1, name: "AVALANCHE_PRO", score: 15420 },
-                { rank: 2, name: "SNOW_KNIGHT", score: 14230 },
-                { rank: 3, name: "MOUNTAIN_KING", score: 12890 },
-                { rank: 4, name: "GAMELOOP_HERO", score: 11560 },
-                { rank: 5, name: "FUNTICO_CHAMP", score: 10340 }
-            ];
+            return [];
         }
     }
 
