@@ -59,6 +59,8 @@ export class Game implements Scene {
     private paused : boolean = false;
     private gameOverPhase : number = 0;
     private showLeaderboard : boolean = false;
+    private scoreSubmitted : boolean = false;
+    private scoreSubmissionStatus : string = "";
 
     private transitionTimer : number = 1.0;
     private fadeIn : boolean = false;
@@ -135,6 +137,9 @@ export class Game implements Scene {
         this.oldFuel = 1.0;
 
         this.gameOverPhase = 0;
+        this.scoreSubmitted = false;
+        this.scoreSubmissionStatus = "";
+        this.showLeaderboard = false;
     }
 
 
@@ -154,10 +159,18 @@ export class Game implements Scene {
 
             canvas.drawText(fontYellow, "SCORE: " + scoreToString(this.player.getScore()), cx, 80, -1, 0, TextAlign.Center);
             canvas.drawText(fontYellow, "BEST: " + scoreToString(this.hiscore), cx, 96, -1, 0, TextAlign.Center);
-
-            if (this.enterTimer >= 0.5) {
             
-                canvas.drawText(fontYellow, "PRESS ENTER", cx, canvas.height - 24, -1, 0, TextAlign.Center);
+            // Show score submission status
+            if (this.scoreSubmissionStatus) {
+                const statusColor = this.scoreSubmitted ? "#00ff00" : "#ffff00";
+                canvas.drawText(fontYellow, this.scoreSubmissionStatus, cx, 112, -1, 0, TextAlign.Center);
+            }
+            
+            // Show controls
+            canvas.drawText(fontYellow, "B: LEADERBOARD", cx, canvas.height - 40, -1, 0, TextAlign.Center);
+            
+            if (this.enterTimer >= 0.5) {
+                canvas.drawText(fontYellow, "ENTER: RESTART", cx, canvas.height - 24, -1, 0, TextAlign.Center);
             }
         }
 
@@ -445,6 +458,13 @@ export class Game implements Scene {
                 this.transitionTimer = 1.0;
                 this.fadeIn = true;
             }
+            
+            // Handle leaderboard button in game over screen
+            if (event.input.getAction("leaderboard") == InputState.Pressed) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.showLeaderboard = !this.showLeaderboard;
+            }
+            
             return;
         }
 
@@ -515,6 +535,11 @@ export class Game implements Scene {
         if (this.gameOverPhase > 0) {
 
             this.drawGameOver(canvas, assets);
+            
+            // Draw leaderboard if active in game over screen
+            if (this.showLeaderboard) {
+                this.drawLeaderboard(canvas, assets);
+            }
         }
         else if (!this.titleScreenActive) {
 
@@ -571,16 +596,22 @@ export class Game implements Scene {
     private async submitScoreToFuntico(score: number): Promise<void> {
         if (funticoManager.isReady() && funticoManager.isAuthenticated()) {
             try {
+                this.scoreSubmissionStatus = "Submitting score...";
                 const success = await funticoManager.saveScore(score);
                 if (success) {
+                    this.scoreSubmitted = true;
+                    this.scoreSubmissionStatus = `Score ${score} submitted!`;
                     console.log(`Score ${score} submitted to Funtico leaderboard`);
                 } else {
+                    this.scoreSubmissionStatus = "Failed to submit score";
                     console.log('Failed to submit score to Funtico');
                 }
             } catch (error) {
+                this.scoreSubmissionStatus = "Error submitting score";
                 console.error('Error submitting score to Funtico:', error);
             }
         } else {
+            this.scoreSubmissionStatus = "Login to submit scores";
             console.log('User not authenticated with Funtico, skipping score submission');
         }
     }

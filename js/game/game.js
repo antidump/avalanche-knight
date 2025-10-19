@@ -32,6 +32,8 @@ export class Game {
         this.paused = false;
         this.gameOverPhase = 0;
         this.showLeaderboard = false;
+        this.scoreSubmitted = false;
+        this.scoreSubmissionStatus = "";
         this.transitionTimer = 1.0;
         this.fadeIn = false;
         this.hiscore = 0;
@@ -79,6 +81,9 @@ export class Game {
         this.speedUpAlert = 0;
         this.oldFuel = 1.0;
         this.gameOverPhase = 0;
+        this.scoreSubmitted = false;
+        this.scoreSubmissionStatus = "";
+        this.showLeaderboard = false;
     }
     drawGameOver(canvas, assets) {
         const bmpGameOver = assets.getBitmap("g");
@@ -91,8 +96,15 @@ export class Game {
             canvas.fillRect();
             canvas.drawText(fontYellow, "SCORE: " + scoreToString(this.player.getScore()), cx, 80, -1, 0, 1 /* TextAlign.Center */);
             canvas.drawText(fontYellow, "BEST: " + scoreToString(this.hiscore), cx, 96, -1, 0, 1 /* TextAlign.Center */);
+            // Show score submission status
+            if (this.scoreSubmissionStatus) {
+                const statusColor = this.scoreSubmitted ? "#00ff00" : "#ffff00";
+                canvas.drawText(fontYellow, this.scoreSubmissionStatus, cx, 112, -1, 0, 1 /* TextAlign.Center */);
+            }
+            // Show controls
+            canvas.drawText(fontYellow, "B: LEADERBOARD", cx, canvas.height - 40, -1, 0, 1 /* TextAlign.Center */);
             if (this.enterTimer >= 0.5) {
-                canvas.drawText(fontYellow, "PRESS ENTER", cx, canvas.height - 24, -1, 0, 1 /* TextAlign.Center */);
+                canvas.drawText(fontYellow, "ENTER: RESTART", cx, canvas.height - 24, -1, 0, 1 /* TextAlign.Center */);
             }
         }
         let t = this.player.getDeathTimer() / DEATH_TIME;
@@ -300,6 +312,11 @@ export class Game {
                 this.transitionTimer = 1.0;
                 this.fadeIn = true;
             }
+            // Handle leaderboard button in game over screen
+            if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.showLeaderboard = !this.showLeaderboard;
+            }
             return;
         }
         if (this.gameOverPhase == 0 &&
@@ -344,6 +361,10 @@ export class Game {
         canvas.moveTo();
         if (this.gameOverPhase > 0) {
             this.drawGameOver(canvas, assets);
+            // Draw leaderboard if active in game over screen
+            if (this.showLeaderboard) {
+                this.drawLeaderboard(canvas, assets);
+            }
         }
         else if (!this.titleScreenActive) {
             this.drawHUD(canvas, assets);
@@ -387,19 +408,25 @@ export class Game {
     async submitScoreToFuntico(score) {
         if (funticoManager.isReady() && funticoManager.isAuthenticated()) {
             try {
+                this.scoreSubmissionStatus = "Submitting score...";
                 const success = await funticoManager.saveScore(score);
                 if (success) {
+                    this.scoreSubmitted = true;
+                    this.scoreSubmissionStatus = `Score ${score} submitted!`;
                     console.log(`Score ${score} submitted to Funtico leaderboard`);
                 }
                 else {
+                    this.scoreSubmissionStatus = "Failed to submit score";
                     console.log('Failed to submit score to Funtico');
                 }
             }
             catch (error) {
+                this.scoreSubmissionStatus = "Error submitting score";
                 console.error('Error submitting score to Funtico:', error);
             }
         }
         else {
+            this.scoreSubmissionStatus = "Login to submit scores";
             console.log('User not authenticated with Funtico, skipping score submission');
         }
     }
