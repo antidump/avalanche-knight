@@ -40,6 +40,19 @@ export class FunticoManager {
             // Use window.location.href like the working demo
             await this.sdk.signInWithFuntico(window.location.href);
             console.log('Login initiated successfully');
+            
+            // Wait a bit for login to complete, then update userInfo
+            setTimeout(async () => {
+                try {
+                    this.userInfo = await this.sdk.getUserInfo();
+                    if (this.userInfo) {
+                        console.log('✅ Login successful! User info updated:', this.userInfo);
+                    }
+                } catch (error) {
+                    console.log('Login still in progress or failed:', error.message);
+                }
+            }, 2000);
+            
             return true;
         } catch (error) {
             console.error('Sign in failed:', error);
@@ -55,8 +68,13 @@ export class FunticoManager {
         }
 
         try {
-            this.userInfo = await this.sdk.getUserInfo();
-            return this.userInfo;
+            // Always get fresh user info from SDK
+            const freshUserInfo = await this.sdk.getUserInfo();
+            
+            // Update cached userInfo
+            this.userInfo = freshUserInfo;
+            
+            return freshUserInfo;
         } catch (error) {
             console.error('Failed to get user info:', error);
             return null;
