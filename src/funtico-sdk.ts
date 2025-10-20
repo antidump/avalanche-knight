@@ -18,6 +18,21 @@ export class FunticoManager {
             });
             this.isInitialized = true;
             console.log('Funtico SDK initialized successfully');
+
+            // Silent session restore: try to fetch current user
+            // If user has an active session (after redirect), this will populate userInfo
+            // Do not block init; run in background and ignore errors
+            setTimeout(async () => {
+                try {
+                    const info = await this.sdk.getUserInfo();
+                    if (info) {
+                        this.userInfo = info;
+                        console.log('Funtico session detected. User:', this.userInfo);
+                    }
+                } catch (_e) {
+                    // No active session yet or network error; ignore silently
+                }
+            }, 0);
         } catch (error) {
             console.error('Failed to initialize Funtico SDK:', error);
             this.isInitialized = false;
