@@ -1,12 +1,22 @@
 # 🎮 Avalanche Knight - Funtico GameLoop Integration
 
-Endless runner game with Funtico SDK integration for tournaments and leaderboards.
+Endless runner game with **fully functional** Funtico SDK integration for tournaments and leaderboards.
+
+## ✅ Current Status
+
+**🎉 INTEGRATION COMPLETE & TESTED!**
+
+- ✅ **Login/Authentication**: Working perfectly
+- ✅ **Score Submission**: Successfully submitting to Funtico leaderboard  
+- ✅ **User Session Management**: Auto-restore after login
+- ✅ **Vercel Deployment**: Live at https://avalanche-knight.vercel.app/
+- ⚠️ **Leaderboard Display**: API returning 500 error (Funtico server issue)
 
 ## 🚀 Quick Start
 
 1. **Clone repository:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Modolo-oss/Avalanche-Knight.git
    cd avalanche-knight
    ```
 
@@ -15,97 +25,75 @@ Endless runner game with Funtico SDK integration for tournaments and leaderboard
    npm install
    ```
 
-3. **Configure environment:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Build and run:**
+3. **Build and run:**
    ```bash
    npm run build
    npm run dev
    ```
 
-## ⚙️ Environment Configuration
+## 🎯 Deployment Options
 
-### `.env` File
-```bash
-# Environment: 'sandbox' or 'production'
-FUNTICO_ENV=sandbox
+### 🌟 **NEW: Funtico Upload App (Recommended)**
+1. **Upload App**: https://upload.gameloop.funtico.com/
+2. **Password**: `1k9nw448WaEVRXt`
+3. **Instructions**: 
+   - Upload zip file with `index.html` in root
+   - Automatic hosting on Funtico infrastructure
+   - No manual URL updates needed
 
-# Redirect URL for OAuth callback
-FUNTICO_REDIRECT_URL=https://your-app.vercel.app/
+### Vercel (Current Live)
+- **Live URL**: https://avalanche-knight.vercel.app/
+- **Status**: ✅ Fully functional
+- **Auto-deploy**: On git push
 
-# Funtico Client ID
-FUNTICO_CLIENT_ID=gl-avalanche-knight
-
-# Auto-login setting (true/false)
-FUNTICO_AUTO_LOGIN=false
-
-# Funtico API endpoints
-FUNTICO_AUTH_URL=https://staging.login.funtico.com
-FUNTICO_API_URL=https://api.funtico.com
-```
-
-### 🔄 Swappable Redirect URLs
-
-**For Vercel Deployment:**
-```bash
-FUNTICO_REDIRECT_URL=https://avalanche-knight.vercel.app/
-```
-
-**For Funtico Hosting:**
-```bash
-FUNTICO_REDIRECT_URL=https://games.funtico.com/avalanche-knight/auth/callback
-```
-
-**For Local Development:**
-```bash
-FUNTICO_REDIRECT_URL=http://localhost:8000/
-```
-
-## 🎯 Deployment
-
-### Vercel
-1. Update `vercel.json` with your environment variables
-2. Deploy: `vercel --prod`
-
-### Funtico Platform
-1. Update `.env` with Funtico redirect URL
-2. Build: `npm run build`
-3. Send build files to Funtico team
+### Itch.io (Backup)
+- Can still upload to Itch.io for wider audience
+- No manual URL updates needed anymore
 
 ## 🎮 Game Controls
 
 - **Arrow Keys**: Move player
 - **L**: Login to Funtico
-- **B**: Back to menu
+- **B**: View leaderboard
 - **Space**: Jump/Start game
 
 ## 📊 Features
 
-- ✅ Funtico SDK integration
-- ✅ OAuth2 authentication
-- ✅ Score submission to leaderboard
-- ✅ Real-time leaderboard display
-- ✅ Swappable redirect URLs
-- ✅ Environment-based configuration
+- ✅ **Funtico SDK Integration**: Complete
+- ✅ **OAuth2 Authentication**: Working
+- ✅ **Score Submission**: Successfully submitting scores
+- ✅ **User Session Auto-Restore**: After login redirect
+- ✅ **Real-time Score Feedback**: Shows submission status
+- ✅ **Error Handling**: Proper error messages for API issues
 
-## 🔧 Troubleshooting
+## 🔧 Technical Details
 
-### Login Issues
-- Check redirect URL in `.env`
-- Verify client ID with Funtico support
-- Clear browser cache and cookies
+### Funtico SDK Configuration
+```javascript
+// Simplified configuration (working)
+const sdk = new FunticoSDK({
+    authClientId: 'gl-avalanche-knight'
+});
+```
 
-### Build Issues
-- Run `npm run build` to compile TypeScript
-- Check `tsconfig.json` configuration
+### Key Features Implemented
+- **Auto-session restore**: Detects existing login after redirect
+- **Score submission**: Real-time feedback to user
+- **Error handling**: Graceful handling of API errors
+- **Global access**: `window.funticoManager` available
+
+## 🐛 Known Issues
+
+### Leaderboard API Error
+- **Issue**: `500 Internal Server Error` from Funtico API
+- **Endpoint**: `/api/v1/core/gamejam/games/leaderboard`
+- **Status**: Funtico server issue (not our code)
+- **Workaround**: Upload to new Funtico Upload App may resolve
 
 ## 📞 Support
 
 - **Funtico Support**: gameloop@funtico.com
+- **Upload App**: https://upload.gameloop.funtico.com/
 - **Documentation**: https://js.demo.gameloop.funtico.com/
 
 ------

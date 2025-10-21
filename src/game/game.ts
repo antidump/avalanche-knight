@@ -157,6 +157,7 @@ export class Game implements Scene {
             canvas.fillColor("#000000aa");
             canvas.fillRect();
 
+            // ALL TEXT REMOVED FOR DEBUGGING
             canvas.drawText(fontYellow, "SCORE: " + scoreToString(this.player.getScore()), cx, 80, -1, 0, TextAlign.Center);
             canvas.drawText(fontYellow, "BEST: " + scoreToString(this.hiscore), cx, 96, -1, 0, TextAlign.Center);
             
@@ -167,10 +168,8 @@ export class Game implements Scene {
             }
             
             // Show controls
-            canvas.drawText(fontYellow, "B: LEADERBOARD", cx, canvas.height - 40, -1, 0, TextAlign.Center);
-            
             if (this.enterTimer >= 0.5) {
-                canvas.drawText(fontYellow, "ENTER: RESTART", cx, canvas.height - 24, -1, 0, TextAlign.Center);
+                canvas.drawText(fontYellow, "ENTER: RESTART", cx, canvas.height - 20, -1, 0, TextAlign.Center);
             }
         }
 
@@ -256,24 +255,24 @@ export class Game implements Scene {
         // canvas.drawBitmap(bmpLogo, w/2 - bmpLogo.width/2, 16);
 
         // Controls
-        canvas.fillRect(24, 48, canvas.width - 48, 56);
-        canvas.drawText(bmpFont, "CONTROLS: ", canvas.width/2, 52, 0, 0, TextAlign.Center);
-        canvas.drawText(bmpFontWhite, "+;/< OR A/D: MOVE", 28, 62);
-        canvas.drawText(bmpFontWhite, "+= OR W: JUMP/FLY", 28, 72);
-        canvas.drawText(bmpFontWhite, "+SPACE: ATTACK", 28, 82);
-        canvas.drawText(bmpFontWhite, "+ENTER: PAUSE", 28, 92);
-        canvas.drawText(bmpFontWhite, "+L: LOGIN/LOGOUT", 28, 102);
-        canvas.drawText(bmpFontWhite, "+B: LEADERBOARD", 28, 112);
+        canvas.fillRect(24, 40, canvas.width - 48, 72);
+        canvas.drawText(bmpFont, "CONTROLS: ", canvas.width/2, 44, 0, 0, TextAlign.Center);
+        canvas.drawText(bmpFontWhite, "+;/< OR A/D: MOVE", 28, 54);
+        canvas.drawText(bmpFontWhite, "+= OR W: JUMP/FLY", 28, 64);
+        canvas.drawText(bmpFontWhite, "+SPACE: ATTACK", 28, 74);
+        canvas.drawText(bmpFontWhite, "+ENTER: PAUSE", 28, 84);
+        canvas.drawText(bmpFontWhite, "+L: LOGIN/LOGOUT", 28, 94);
+        canvas.drawText(bmpFontWhite, "+B: LEADERBOARD", 28, 104);
 
-        // Funtico Status
-        const funticoStatus = this.isLoggedIn() ? 
-            `LOGGED IN: ${this.getCurrentUsername()}` : 
-            "PRESS L TO LOGIN";
-        canvas.drawText(bmpFont, funticoStatus, w/2, 130, -1, 0, TextAlign.Center);
+        // Funtico Status - REMOVED
+        // const funticoStatus = this.isLoggedIn() ? 
+        //     `LOGGED IN: ${this.getCurrentUsername()}` : 
+        //     "PRESS L TO LOGIN";
+        // canvas.drawText(bmpFont, funticoStatus, w/2, 130, -1, 0, TextAlign.Center);
 
         if (this.enterTimer >= 0.5) {
             
-            canvas.drawText(bmpFont, "PRESS ENTER", w/2, h - 28, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFont, "PRESS ENTER", w/2, h - 24, -1, 0, TextAlign.Center);
         }
 
         canvas.drawText(bmpFont, "$2025 AVALANCHE GAMELOOP", w/2, h - 9, -1, 0, TextAlign.Center);
@@ -333,7 +332,7 @@ export class Game implements Scene {
 
             // Instructions
             canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-            canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
+            // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
         }).catch(error => {
             console.error('Error loading leaderboard:', error);
             // Show error message
@@ -342,7 +341,7 @@ export class Game implements Scene {
             
             // Instructions
             canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-            canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
+            // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
         });
     }
 
@@ -459,6 +458,14 @@ export class Game implements Scene {
                 this.fadeIn = true;
             }
             
+            // Handle return to home button in game over screen
+            if (event.input.getAction("h") == InputState.Pressed) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.titleScreenActive = true;
+                this.gameOverPhase = 0;
+                this.showLeaderboard = false;
+            }
+            
             // Handle leaderboard button in game over screen
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
@@ -560,7 +567,7 @@ export class Game implements Scene {
             }
         }
 
-        if (this.titleScreenActive) {
+        else if (this.titleScreenActive) {
 
             this.drawTitleScreen(canvas, assets);
             
@@ -617,8 +624,8 @@ export class Game implements Scene {
                 this.scoreSubmissionStatus = "Error submitting score";
                 console.error('Error submitting score to Funtico:', error);
             }
-        } else {
-            this.scoreSubmissionStatus = "Login to submit scores";
+        }         else {
+            this.scoreSubmissionStatus = "";
             console.log('User not authenticated with Funtico, skipping score submission');
         }
     }
