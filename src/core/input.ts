@@ -31,7 +31,6 @@ export class InputManager {
     private keys : Map<string, InputState>;
     private prevent : Array<string>;
     private actions : Map<string, InputAction>;
-    private touchState : Map<string, InputState>;
 
     private anyKeyPressed : boolean = false;
 
@@ -47,7 +46,6 @@ export class InputManager {
         this.keys = new Map<string, InputState> ();
         this.prevent = new Array<string> ();
         this.actions = new Map<string, InputAction> ();
-        this.touchState = new Map<string, InputState> ();
 
         window.addEventListener("keydown", (e : KeyboardEvent) => {
 
@@ -72,22 +70,6 @@ export class InputManager {
         // run inside an iframe
         window.addEventListener("mousemove", () => window.focus());
         window.addEventListener("mousedown", () => window.focus());
-        
-        // Touch events for mobile support
-        window.addEventListener("touchstart", (e : TouchEvent) => {
-            e.preventDefault();
-            window.focus();
-            this.touchEvent(e, InputState.Pressed);
-        });
-        
-        window.addEventListener("touchend", (e : TouchEvent) => {
-            e.preventDefault();
-            this.touchEvent(e, InputState.Released);
-        });
-        
-        window.addEventListener("touchmove", (e : TouchEvent) => {
-            e.preventDefault();
-        });
     }
 
 
@@ -101,36 +83,6 @@ export class InputManager {
     }
 
 
-    private touchEvent(e : TouchEvent, state : InputState) : void {
-        const canvas = document.querySelector('canvas');
-        if (!canvas) return;
-        
-        const rect = canvas.getBoundingClientRect();
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-        
-        for (let i = 0; i < e.changedTouches.length; i++) {
-            const touch = e.changedTouches[i];
-            const x = (touch.clientX - rect.left) * (canvasWidth / rect.width);
-            const y = (touch.clientY - rect.top) * (canvasHeight / rect.height);
-            
-            // Define touch zones
-            const leftZone = x < canvasWidth * 0.3;
-            const rightZone = x > canvasWidth * 0.7;
-            const jumpZone = x >= canvasWidth * 0.3 && x <= canvasWidth * 0.7 && y > canvasHeight * 0.5;
-            const attackZone = x >= canvasWidth * 0.3 && x <= canvasWidth * 0.7 && y <= canvasHeight * 0.5;
-            
-            if (leftZone) {
-                this.touchState.set('left', state);
-            } else if (rightZone) {
-                this.touchState.set('right', state);
-            } else if (jumpZone) {
-                this.touchState.set('jump', state);
-            } else if (attackZone) {
-                this.touchState.set('attack', state);
-            }
-        }
-    }
 
 
     public update() : void {
@@ -142,13 +94,6 @@ export class InputManager {
             if ((v = this.keys.get(k) as InputState) > 1) {
                 
                 this.keys.set(k, v-2);
-            }
-        }
-        
-        // Update touch states
-        for (let k of this.touchState.keys()) {
-            if ((v = this.touchState.get(k) as InputState) > 1) {
-                this.touchState.set(k, v-2);
             }
         }
 
@@ -174,19 +119,6 @@ export class InputManager {
         for (let k of a.keys) {
             if ( ( state = (this.keys.get(k) ?? InputState.Up) ) != InputState.Up)
                 break;
-        }
-        
-        // If no keyboard input, check touch input
-        if (state === InputState.Up) {
-            if (name === 'l' && this.touchState.get('left')) {
-                state = this.touchState.get('left')!;
-            } else if (name === 'r' && this.touchState.get('right')) {
-                state = this.touchState.get('right')!;
-            } else if (name === 'j' && this.touchState.get('jump')) {
-                state = this.touchState.get('jump')!;
-            } else if (name === 't' && this.touchState.get('attack')) {
-                state = this.touchState.get('attack')!;
-            }
         }
         
         return state;

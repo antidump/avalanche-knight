@@ -180,7 +180,7 @@ export class Game {
         if (funticoManager.isAuthenticated()) {
             const username = funticoManager.getUsername();
             if (username) {
-                canvas.drawText(bmpFontWhite, `Logged in: ${username}`, w - 4, 4, -1, 0, 2 /* TextAlign.Right */);
+                canvas.drawText(bmpFontWhite, `Logged in: ${username}`, w - 20, 4, -1, 0, 2 /* TextAlign.Right */);
             }
         }
         // Controls
