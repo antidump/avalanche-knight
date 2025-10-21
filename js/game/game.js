@@ -211,12 +211,12 @@ export class Game {
             const username = funticoManager.getUsername();
             console.log('Username:', username);
             if (username) {
-                // Semi-transparent background
+                // Semi-transparent background - positioned below controls panel
                 canvas.fillColor("#000000aa");
-                canvas.fillRect(w / 2 - 60, h / 2 - 20, 120, 40);
-                // Popup text
-                canvas.drawText(bmpFontWhite, "Logged in as:", w / 2, h / 2 - 8, -1, 0, 1 /* TextAlign.Center */);
-                canvas.drawText(bmpFontWhite, username, w / 2, h / 2 + 4, -1, 0, 1 /* TextAlign.Center */);
+                canvas.fillRect(w / 2 - 60, h / 2 + 20, 120, 40);
+                // Popup text - positioned below controls panel
+                canvas.drawText(bmpFontWhite, "Logged in as:", w / 2, h / 2 + 32, -1, 0, 1 /* TextAlign.Center */);
+                canvas.drawText(bmpFontWhite, username, w / 2, h / 2 + 44, -1, 0, 1 /* TextAlign.Center */);
             }
         }
         // TEMP, a color test
