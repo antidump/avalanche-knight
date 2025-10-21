@@ -40,6 +40,8 @@ export class Game {
         this.titleScreenActive = true;
         this.enterTimer = 0.49;
         this.gameStarted = false;
+        this.showLoginPopup = false;
+        this.loginPopupTimer = 0;
         // For animation
         this.oldFuel = 1.0;
         this.terrain = new Terrain(event);
@@ -188,6 +190,18 @@ export class Game {
             canvas.drawText(bmpFont, "PRESS ENTER", w / 2, h - 24, -1, 0, 1 /* TextAlign.Center */);
         }
         canvas.drawText(bmpFont, "$2025 AVALANCHE GAMELOOP", w / 2, h - 9, -1, 0, 1 /* TextAlign.Center */);
+        // Show login popup if active
+        if (this.showLoginPopup) {
+            const username = funticoManager.getUsername();
+            if (username) {
+                // Semi-transparent background
+                canvas.fillColor("#000000aa");
+                canvas.fillRect(w / 2 - 60, h / 2 - 20, 120, 40);
+                // Popup text
+                canvas.drawText(bmpFontWhite, "Logged in as:", w / 2, h / 2 - 8, -1, 0, 1 /* TextAlign.Center */);
+                canvas.drawText(bmpFontWhite, username, w / 2, h / 2 + 4, -1, 0, 1 /* TextAlign.Center */);
+            }
+        }
         // TEMP, a color test
         /*
         canvas.drawBitmap(assets.getBitmap("b1"), 0, 0);
@@ -291,6 +305,13 @@ export class Game {
         // not shown to avoid having to write this twice, thus saving
         // some precious bytes
         this.enterTimer = (this.enterTimer + ENTER_SPEED * event.tick) % 1.0;
+        // Update login popup timer
+        if (this.loginPopupTimer > 0) {
+            this.loginPopupTimer -= event.tick * (1.0 / 60.0);
+            if (this.loginPopupTimer <= 0) {
+                this.showLoginPopup = false;
+            }
+        }
         if (this.titleScreenActive) {
             this.cloudPos = (this.cloudPos + CLOUD_BASE_SPEED * event.tick) % 48;
             if (event.input.getAction("s") == 3 /* InputState.Pressed */) {
@@ -463,6 +484,9 @@ export class Game {
                     console.log(`Welcome ${userInfo.username}!`);
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
+                    // Show login popup
+                    this.showLoginPopup = true;
+                    this.loginPopupTimer = 4.0; // 4 seconds
                     return true;
                 }
             }
