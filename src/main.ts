@@ -12,6 +12,8 @@ import { funticoManager } from "./funtico-sdk.js";
 const initialEvent = (event : ProgramEvent) : void => {
 
     event.audio.setGlobalVolume(0.40);
+    // Enable audio by default since we skip audio selection
+    event.audio.toggle(true);
 
     // Yes, I had to manually shorten these names to save
     // some bytes. It's ugly, but necessary

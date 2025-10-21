@@ -7,6 +7,8 @@ import { funticoManager } from "./funtico-sdk.js";
 window.funticoManager = funticoManager;
 const initialEvent = (event) => {
     event.audio.setGlobalVolume(0.40);
+    // Enable audio by default since we skip audio selection
+    event.audio.toggle(true);
     // Yes, I had to manually shorten these names to save
     // some bytes. It's ugly, but necessary
     event.input.addAction("l", ["ArrowLeft", "KeyA"]);
