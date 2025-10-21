@@ -29,6 +29,9 @@ const initialEvent = (event : ProgramEvent) : void => {
 
     event.scenes.addScene("g", new Game(event));
     event.scenes.addScene("a", new AudioIntro());
+    
+    // Set Game scene as active (skip audio selection)
+    event.scenes.changeScene("g");
 
     event.assets.loadBitmap("_f", "f.png");
     event.assets.loadBitmap("_b", "b.png");

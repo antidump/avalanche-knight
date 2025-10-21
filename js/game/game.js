@@ -192,7 +192,9 @@ export class Game {
         canvas.drawText(bmpFont, "$2025 AVALANCHE GAMELOOP", w / 2, h - 9, -1, 0, 1 /* TextAlign.Center */);
         // Show login popup if active
         if (this.showLoginPopup) {
+            console.log('Popup should be showing!');
             const username = funticoManager.getUsername();
+            console.log('Username:', username);
             if (username) {
                 // Semi-transparent background
                 canvas.fillColor("#000000aa");
@@ -485,6 +487,7 @@ export class Game {
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
                     // Show login popup
+                    console.log('Setting popup to show!');
                     this.showLoginPopup = true;
                     this.loginPopupTimer = 4.0; // 4 seconds
                     return true;

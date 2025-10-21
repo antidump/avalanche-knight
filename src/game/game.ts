@@ -289,7 +289,9 @@ export class Game implements Scene {
 
         // Show login popup if active
         if (this.showLoginPopup) {
+            console.log('Popup should be showing!');
             const username = funticoManager.getUsername();
+            console.log('Username:', username);
             if (username) {
                 // Semi-transparent background
                 canvas.fillColor("#000000aa");
@@ -678,6 +680,7 @@ export class Game implements Scene {
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
                     // Show login popup
+                    console.log('Setting popup to show!');
                     this.showLoginPopup = true;
                     this.loginPopupTimer = 4.0; // 4 seconds
                     return true;
