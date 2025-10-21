@@ -143,9 +143,9 @@ export class Game {
         // Score
         canvas.drawBitmap(bmpBase, canvas.width / 2 - 8, 1, 48, 80, 16, 8);
         canvas.drawText(bmpFont, scoreToString(this.player.getScore()), canvas.width / 2, 8, -1, 0, 1 /* TextAlign.Center */);
-        // Orbs
+        // Orbs - DISABLED FOR DEBUG
         canvas.drawBitmap(bmpBase, canvas.width - 40, 4, 32, 88, 8, 8);
-        canvas.drawText(bmpFont, "#" + String(this.player.getOrbs()), canvas.width - 31, 4, -1);
+        // canvas.drawText(bmpFont, "#" + String(this.player.getOrbs()), canvas.width - 31, 4, -1);
         // Fuel
         canvas.drawBitmap(bmpBase, 2, 4, 40, 88, 8, 8);
         for (let i = 0; i < 2; ++i) {
