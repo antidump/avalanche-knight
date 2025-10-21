@@ -270,13 +270,13 @@ export class Game implements Scene {
         canvas.drawVerticallyWavingBitmap(bmpLogo, w/2 - bmpLogo.width/2, 12, Math.PI*2, 4, (this.enterTimer + this.transitionTimer)*Math.PI*2);
         // canvas.drawBitmap(bmpLogo, w/2 - bmpLogo.width/2, 16);
 
-        // Show username in top-right corner if logged in
-        if (funticoManager.isAuthenticated()) {
-            const username = funticoManager.getUsername();
-            if (username) {
-                canvas.drawText(bmpFontWhite, `Logged in: ${username}`, w - 20, 4, -1, 0, TextAlign.Right);
-            }
-        }
+        // Show username in top-right corner if logged in - DISABLED FOR DEBUG
+        // if (funticoManager.isAuthenticated()) {
+        //     const username = funticoManager.getUsername();
+        //     if (username) {
+        //         canvas.drawText(bmpFontWhite, `Hi ${username}`, w - 20, 4, -1, 0, TextAlign.Right);
+        //     }
+        // }
 
         // Controls
         canvas.fillRect(24, 40, canvas.width - 48, 72);
