@@ -98,18 +98,6 @@ const sdk = new FunticoSDK({
 
 ------
 
-## Original Game Info
-
-Avalanche Knight is a tiny arcade endless runner action game themed for Avalanche GameLoop hackathon. Originally made for [js13k competition (2023)](/https://js13kgames.com/).
-
-------
-
-### ⚠️ Warning ⚠️
-
-The code is bad. Like, really bad in some places. This was, however, intentional (well, there is also unintentional spaghetti, but let's ignore it for now), since I needed to find ways to save bytes, so I applied some... questionable programming practices. So, whatever you are going to do this with this code, please don't take any inspiration...
-
-------
-
 ### Building
 
 Typescript installation is mandatory. If you just want to make changes to the code, running `tsc` on the root is sufficient. If you want to make a zipped and "optimized" package that should fit 13kB (provided that you have up-to-date versions of all the tools), you need the following tools:
