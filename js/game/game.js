@@ -40,25 +40,12 @@ export class Game {
         this.titleScreenActive = true;
         this.enterTimer = 0.49;
         this.gameStarted = false;
-        this.justLoggedIn = false;
         // For animation
         this.oldFuel = 1.0;
         this.terrain = new Terrain(event);
         this.player = new Player(64, event.screenHeight - 40);
         this.camera = new Camera(-144);
         this.hiscore = getHiscore();
-        // Check if user just logged in (redirect from Funtico)
-        this.checkLoginRedirect();
-    }
-    checkLoginRedirect() {
-        // Check if user just logged in by looking for Funtico redirect parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        if (code || state) {
-            this.justLoggedIn = true;
-            console.log('Login redirect detected, will show welcome message');
-        }
     }
     drawBackground(canvas, assets) {
         const CLOUD_Y = 64;
@@ -476,7 +463,6 @@ export class Game {
                     console.log(`Welcome ${userInfo.username}!`);
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
-                    this.justLoggedIn = true;
                     return true;
                 }
             }

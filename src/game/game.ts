@@ -70,7 +70,6 @@ export class Game implements Scene {
     private titleScreenActive : boolean = true;
     private enterTimer : number = 0.49;
     private gameStarted : boolean = false;
-    private justLoggedIn : boolean = false;
 
     // For animation
     private oldFuel : number = 1.0;
@@ -84,23 +83,8 @@ export class Game implements Scene {
         
 
         this.hiscore = getHiscore();
-        
-        // Check if user just logged in (redirect from Funtico)
-        this.checkLoginRedirect();
     }
 
-
-    private checkLoginRedirect() : void {
-        // Check if user just logged in by looking for Funtico redirect parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        
-        if (code || state) {
-            this.justLoggedIn = true;
-            console.log('Login redirect detected, will show welcome message');
-        }
-    }
 
     private drawBackground(canvas : Canvas, assets : AssetManager) : void {
 
@@ -669,7 +653,6 @@ export class Game implements Scene {
                     console.log(`Welcome ${userInfo.username}!`);
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
-                    this.justLoggedIn = true;
                     return true;
                 }
             }
