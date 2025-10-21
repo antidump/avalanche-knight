@@ -96,6 +96,11 @@ export class FunticoManager {
         }
     }
 
+    // Get current username for display
+    public getUsername(): string {
+        return this.userInfo?.username || '';
+    }
+
     // Submit player score to leaderboard - simple like demo
     public async saveScore(score: number): Promise<boolean> {
         if (!this.isReady()) {
@@ -156,11 +161,6 @@ export class FunticoManager {
     // Check if user is authenticated
     public isAuthenticated(): boolean {
         return this.userInfo !== null;
-    }
-
-    // Get current user's username
-    public getUsername(): string {
-        return this.userInfo?.username || 'Guest';
     }
 
     // Get current user's ID

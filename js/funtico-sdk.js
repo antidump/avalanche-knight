@@ -86,6 +86,10 @@ export class FunticoManager {
             return null;
         }
     }
+    // Get current username for display
+    getUsername() {
+        return this.userInfo?.username || '';
+    }
     // Submit player score to leaderboard - simple like demo
     async saveScore(score) {
         if (!this.isReady()) {
@@ -141,10 +145,6 @@ export class FunticoManager {
     // Check if user is authenticated
     isAuthenticated() {
         return this.userInfo !== null;
-    }
-    // Get current user's username
-    getUsername() {
-        return this.userInfo?.username || 'Guest';
     }
     // Get current user's ID
     getUserId() {
