@@ -70,8 +70,6 @@ export class Game implements Scene {
     private titleScreenActive : boolean = true;
     private enterTimer : number = 0.49;
     private gameStarted : boolean = false;
-    private showLoginPopup : boolean = false;
-    private loginPopupTimer : number = 0;
 
     // For animation
     private oldFuel : number = 1.0;
@@ -98,8 +96,8 @@ export class Game implements Scene {
                 const username = funticoManager.getUsername();
                 if (username) {
                     console.log('Existing login detected:', username);
-                    this.showLoginPopup = true;
-                    this.loginPopupTimer = 4.0; // 4 seconds
+                    // Show browser alert instead of in-game popup
+                    alert(`Welcome back, ${username}!`);
                 }
             }
         }, 1000); // Wait 1 second for SDK to initialize
@@ -304,22 +302,6 @@ export class Game implements Scene {
 
         canvas.drawText(bmpFont, "$2025 AVALANCHE GAMELOOP", w/2, h - 9, -1, 0, TextAlign.Center);
 
-        // Show login popup if active
-        if (this.showLoginPopup) {
-            console.log('Popup should be showing!');
-            const username = funticoManager.getUsername();
-            console.log('Username:', username);
-            if (username) {
-                // Semi-transparent background - positioned below controls panel
-                canvas.fillColor("#000000aa");
-                canvas.fillRect(w/2 - 60, h/2 + 20, 120, 40);
-                
-                // Popup text - positioned below controls panel
-                canvas.drawText(bmpFontWhite, "Logged in as:", w/2, h/2 + 32, -1, 0, TextAlign.Center);
-                canvas.drawText(bmpFontWhite, username, w/2, h/2 + 44, -1, 0, TextAlign.Center);
-            }
-        }
-
         // TEMP, a color test
         /*
         canvas.drawBitmap(assets.getBitmap("b1"), 0, 0);
@@ -459,14 +441,6 @@ export class Game implements Scene {
         // not shown to avoid having to write this twice, thus saving
         // some precious bytes
         this.enterTimer = (this.enterTimer + ENTER_SPEED*event.tick) % 1.0;
-
-        // Update login popup timer
-        if (this.loginPopupTimer > 0) {
-            this.loginPopupTimer -= event.tick * (1.0/60.0);
-            if (this.loginPopupTimer <= 0) {
-                this.showLoginPopup = false;
-            }
-        }
 
         if (this.titleScreenActive) {
 
@@ -696,10 +670,8 @@ export class Game implements Scene {
                     console.log(`Welcome ${userInfo.username}!`);
                     // Ensure we're on title screen after login
                     this.titleScreenActive = true;
-                    // Show login popup
-                    console.log('Setting popup to show!');
-                    this.showLoginPopup = true;
-                    this.loginPopupTimer = 4.0; // 4 seconds
+                    // Show browser alert instead of in-game popup
+                    alert(`Welcome, ${userInfo.username}!`);
                     return true;
                 }
             }
