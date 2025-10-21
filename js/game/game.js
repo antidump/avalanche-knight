@@ -48,6 +48,21 @@ export class Game {
         this.player = new Player(64, event.screenHeight - 40);
         this.camera = new Camera(-144);
         this.hiscore = getHiscore();
+        // Check if user is already logged in and show popup
+        this.checkExistingLogin();
+    }
+    checkExistingLogin() {
+        // Check if user is already logged in from existing session
+        setTimeout(() => {
+            if (funticoManager.isAuthenticated()) {
+                const username = funticoManager.getUsername();
+                if (username) {
+                    console.log('Existing login detected:', username);
+                    this.showLoginPopup = true;
+                    this.loginPopupTimer = 4.0; // 4 seconds
+                }
+            }
+        }, 1000); // Wait 1 second for SDK to initialize
     }
     drawBackground(canvas, assets) {
         const CLOUD_Y = 64;
