@@ -320,7 +320,6 @@ export class Game implements Scene {
         const bmpFont = assets.getBitmap("fy");
         const bmpFontWhite = assets.getBitmap("fw");
         const bmpFontYellow = assets.getBitmap("fy");
-        const bmpFontSmall = assets.getBitmap("fs"); // Try small font
     
         const w = canvas.width;
         const h = canvas.height;
@@ -368,8 +367,8 @@ export class Game implements Scene {
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
                 
-                canvas.drawText(bmpFontSmall, nameText, 25, y);
-                canvas.drawText(bmpFontSmall, scoreText, w - 60, y);
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
                 y += 10;
             }
         }
