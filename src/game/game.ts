@@ -556,20 +556,20 @@ export class Game implements Scene {
                 this.handleLogin();
             }
             
-            // Handle leaderboard
+            // Handle leaderboard toggle
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
-                this.leaderboardScreen = true;
-                this.showLeaderboard = false;
-                // Reset cache when opening leaderboard
-                this.leaderboardLoaded = false;
-                this.cachedLeaderboard = [];
-            }
-            
-            // Handle back to menu from leaderboard
-            if (this.leaderboardScreen && event.input.getAction("leaderboard") == InputState.Pressed) {
-                event.audio.playSample(event.assets.getSample("as"), 0.60);
-                this.leaderboardScreen = false;
+                if (this.leaderboardScreen) {
+                    // Back to menu
+                    this.leaderboardScreen = false;
+                } else {
+                    // Open leaderboard
+                    this.leaderboardScreen = true;
+                    this.showLeaderboard = false;
+                    // Reset cache when opening leaderboard
+                    this.leaderboardLoaded = false;
+                    this.cachedLeaderboard = [];
+                }
             }
             
             return;
