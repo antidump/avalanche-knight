@@ -333,14 +333,18 @@ export class Game {
             for (const entry of this.cachedLeaderboard) {
                 const nameText = entry.user?.username || 'Unknown User';
                 const scoreText = entry.score?.toString().padStart(5, ' ') || '0';
+                console.log('Drawing username:', nameText, 'at Y:', y);
                 // Highlight current user if logged in
                 if (this.isLoggedIn() && entry.user?.username === this.getCurrentUsername()) {
                     canvas.fillColor("#ffff0033");
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
-                canvas.drawText(bmpFontWhite, nameText, 25, y);
+                // Test with different fonts and positions
+                canvas.drawText(bmpFontYellow, nameText, 25, y);
                 canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-                y += 15;
+                // Test with center alignment
+                canvas.drawText(bmpFontWhite, nameText, w / 2, y + 20, -1, 0, 1 /* TextAlign.Center */);
+                y += 40; // More space for test
             }
         }
         // Instructions
