@@ -384,11 +384,14 @@ export class Game implements Scene {
                 }
                 
                 // Test with different positions and fonts
-                canvas.drawText(bmpFontYellow, nameText, 25, y);
-                canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
                 
-                // Test with white font at different position
-                canvas.drawText(bmpFontWhite, nameText, 25, y + 15);
+                // Test with yellow font at different position
+                canvas.drawText(bmpFontYellow, nameText, 25, y + 15);
+                
+                // Test with center alignment
+                canvas.drawText(bmpFontWhite, nameText, w/2, y + 30, -1, 0, TextAlign.Center);
                 
                 y += 25; // More space for test
             }

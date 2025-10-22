@@ -275,10 +275,12 @@ export class Game {
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
                 // Test with different positions and fonts
-                canvas.drawText(bmpFontYellow, nameText, 25, y);
-                canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
-                // Test with white font at different position
-                canvas.drawText(bmpFontWhite, nameText, 25, y + 15);
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                // Test with yellow font at different position
+                canvas.drawText(bmpFontYellow, nameText, 25, y + 15);
+                // Test with center alignment
+                canvas.drawText(bmpFontWhite, nameText, w / 2, y + 30, -1, 0, 1 /* TextAlign.Center */);
                 y += 25; // More space for test
             }
         }
