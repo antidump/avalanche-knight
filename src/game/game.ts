@@ -359,7 +359,6 @@ export class Game implements Scene {
             // Draw leaderboard entries
             let y = 40;
             for (const entry of this.cachedLeaderboard) {
-                const rankText = `#${entry.place.toString().padStart(2, ' ')}`;
                 const nameText = entry.user.username;
                 const scoreText = entry.score.toString().padStart(5, ' ');
                 
@@ -369,8 +368,7 @@ export class Game implements Scene {
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
                 
-                canvas.drawText(bmpFontWhite, rankText, 25, y);
-                canvas.drawText(bmpFontWhite, nameText, 50, y);
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
                 canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
                 y += 10;
             }
