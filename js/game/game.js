@@ -219,6 +219,7 @@ export class Game {
         const bmpFont = assets.getBitmap("fy");
         const bmpFontWhite = assets.getBitmap("fw");
         const bmpFontYellow = assets.getBitmap("fy");
+        const bmpFontSmall = assets.getBitmap("fs"); // Try small font
         const w = canvas.width;
         const h = canvas.height;
         canvas.fillColor("#00000055");
@@ -262,8 +263,8 @@ export class Game {
                     canvas.fillColor("#ffff0033");
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
-                canvas.drawText(bmpFontYellow, nameText, 25, y);
-                canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
+                canvas.drawText(bmpFontSmall, nameText, 25, y);
+                canvas.drawText(bmpFontSmall, scoreText, w - 60, y);
                 y += 10;
             }
         }
