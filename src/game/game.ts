@@ -324,11 +324,19 @@ export class Game implements Scene {
         const w = canvas.width;
         const h = canvas.height;
 
-        canvas.fillColor("#00000055");
-        canvas.fillRect();
+        // Clear background with solid color
+        canvas.fillColor("#000000");
+        canvas.fillRect(0, 0, w, h);
+        
+        // Semi-transparent overlay
+        canvas.fillColor("#00000088");
+        canvas.fillRect(0, 0, w, h);
 
         // Title
         canvas.drawText(bmpFontYellow, "LEADERBOARD", w/2, 20, -1, 0, TextAlign.Center);
+        
+        // Debug text to test rendering
+        canvas.drawText(bmpFontWhite, "TEST RENDERING", w/2, 35, -1, 0, TextAlign.Center);
 
         // Load leaderboard data only once
         if (!this.leaderboardLoaded) {
@@ -367,8 +375,8 @@ export class Game implements Scene {
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
                 
-                canvas.drawText(bmpFontWhite, nameText, 25, y);
-                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                canvas.drawText(bmpFontYellow, nameText, 25, y);
+                canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
                 y += 10;
             }
         }
