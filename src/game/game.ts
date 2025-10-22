@@ -366,11 +366,16 @@ export class Game implements Scene {
             // Draw leaderboard entries
             let y = 40;
             for (const entry of this.cachedLeaderboard) {
-                const nameText = entry.user.username;
-                const scoreText = entry.score.toString().padStart(5, ' ');
+                console.log('Entry data:', entry);
+                console.log('Entry user:', entry.user);
+                console.log('Entry username:', entry.user?.username);
+                
+                // Safe access to username with fallback
+                const nameText = entry.user?.username || 'Unknown User';
+                const scoreText = entry.score?.toString().padStart(5, ' ') || '0';
                 
                 // Highlight current user if logged in
-                if (this.isLoggedIn() && entry.user.username === this.getCurrentUsername()) {
+                if (this.isLoggedIn() && entry.user?.username === this.getCurrentUsername()) {
                     canvas.fillColor("#ffff0033");
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
