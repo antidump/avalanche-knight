@@ -61,6 +61,8 @@ export class Game implements Scene {
     private showLeaderboard : boolean = false;
     private scoreSubmitted : boolean = false;
     private scoreSubmissionStatus : string = "";
+    private cachedLeaderboard : any[] = [];
+    private leaderboardLoaded : boolean = false;
 
     private transitionTimer : number = 1.0;
     private fadeIn : boolean = false;
@@ -328,46 +330,46 @@ export class Game implements Scene {
         // Title
         canvas.drawText(bmpFontYellow, "LEADERBOARD", w/2, 20, -1, 0, TextAlign.Center);
 
-        // Get real leaderboard data from Funtico
-        this.getFunticoLeaderboard().then(leaderboard => {
-            if (leaderboard.length === 0) {
-                // No leaderboard data available
-                canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w/2, h/2 - 10, -1, 0, TextAlign.Center);
-                canvas.drawText(bmpFontWhite, "Login to submit scores", w/2, h/2 + 5, -1, 0, TextAlign.Center);
-            } else {
-                // Draw leaderboard entries
-                let y = 40;
-                for (const entry of leaderboard) {
-                    const rankText = `#${entry.place.toString().padStart(2, ' ')}`;
-                    const nameText = entry.user.username;
-                    const scoreText = entry.score.toString().padStart(5, ' ');
-                    
-                    // Highlight current user if logged in
-                    if (this.isLoggedIn() && entry.user.username === this.getCurrentUsername()) {
-                        canvas.fillColor("#ffff0033");
-                        canvas.fillRect(20, y - 2, w - 40, 10);
-                    }
-                    
-                    canvas.drawText(bmpFontWhite, rankText, 25, y);
-                    canvas.drawText(bmpFontWhite, nameText, 50, y);
-                    canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-                    y += 10;
+        // Load leaderboard data only once
+        if (!this.leaderboardLoaded) {
+            this.leaderboardLoaded = true;
+            this.getFunticoLeaderboard().then(leaderboard => {
+                this.cachedLeaderboard = leaderboard;
+            }).catch(error => {
+                console.error('Error loading leaderboard:', error);
+                this.cachedLeaderboard = [];
+            });
+        }
+        
+        // Draw cached leaderboard data
+        if (this.cachedLeaderboard.length === 0) {
+            // No leaderboard data available
+            canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w/2, h/2 - 10, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontWhite, "Login to submit scores", w/2, h/2 + 5, -1, 0, TextAlign.Center);
+        } else {
+            // Draw leaderboard entries
+            let y = 40;
+            for (const entry of this.cachedLeaderboard) {
+                const rankText = `#${entry.place.toString().padStart(2, ' ')}`;
+                const nameText = entry.user.username;
+                const scoreText = entry.score.toString().padStart(5, ' ');
+                
+                // Highlight current user if logged in
+                if (this.isLoggedIn() && entry.user.username === this.getCurrentUsername()) {
+                    canvas.fillColor("#ffff0033");
+                    canvas.fillRect(20, y - 2, w - 40, 10);
                 }
+                
+                canvas.drawText(bmpFontWhite, rankText, 25, y);
+                canvas.drawText(bmpFontWhite, nameText, 50, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                y += 10;
             }
+        }
 
-            // Instructions
-            canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-            // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
-        }).catch(error => {
-            console.error('Error loading leaderboard:', error);
-            // Show error message
-            canvas.drawText(bmpFontYellow, "ERROR LOADING LEADERBOARD", w/2, h/2 - 10, -1, 0, TextAlign.Center);
-            canvas.drawText(bmpFontWhite, "Try again later", w/2, h/2 + 5, -1, 0, TextAlign.Center);
-            
-            // Instructions
-            canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-            // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
-        });
+        // Instructions
+        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
+        // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
     }
 
     private drawTransition(canvas : Canvas) : void {
@@ -463,6 +465,11 @@ export class Game implements Scene {
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.showLeaderboard = !this.showLeaderboard;
+                // Reset cache when opening leaderboard
+                if (this.showLeaderboard) {
+                    this.leaderboardLoaded = false;
+                    this.cachedLeaderboard = [];
+                }
             }
             
             return;
@@ -495,6 +502,11 @@ export class Game implements Scene {
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.showLeaderboard = !this.showLeaderboard;
+                // Reset cache when opening leaderboard
+                if (this.showLeaderboard) {
+                    this.leaderboardLoaded = false;
+                    this.cachedLeaderboard = [];
+                }
             }
             
             return;
