@@ -374,15 +374,23 @@ export class Game implements Scene {
                 const nameText = entry.user?.username || 'Unknown User';
                 const scoreText = entry.score?.toString().padStart(5, ' ') || '0';
                 
+                console.log('Rendering nameText:', nameText, 'at position:', 25, y);
+                console.log('Rendering scoreText:', scoreText, 'at position:', w - 60, y);
+                
                 // Highlight current user if logged in
                 if (this.isLoggedIn() && entry.user?.username === this.getCurrentUsername()) {
                     canvas.fillColor("#ffff0033");
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
                 
+                // Test with different positions and fonts
                 canvas.drawText(bmpFontYellow, nameText, 25, y);
                 canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
-                y += 10;
+                
+                // Test with white font at different position
+                canvas.drawText(bmpFontWhite, nameText, 25, y + 15);
+                
+                y += 25; // More space for test
             }
         }
 
