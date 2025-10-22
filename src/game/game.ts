@@ -63,6 +63,7 @@ export class Game implements Scene {
     private scoreSubmissionStatus : string = "";
     private cachedLeaderboard : any[] = [];
     private leaderboardLoaded : boolean = false;
+    private leaderboardScreen : boolean = false;
 
     private transitionTimer : number = 1.0;
     private fadeIn : boolean = false;
@@ -397,9 +398,73 @@ export class Game implements Scene {
             }
         }
 
-        // Instructions - REMOVED
-        // canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
-        // canvas.drawText(bmpFontYellow, "L: LOGIN TO COMPETE", w/2, h - 10, -1, 0, TextAlign.Center);
+        // Instructions
+        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
+    }
+
+    private drawLeaderboardScreen(canvas : Canvas, assets : AssetManager) : void {
+        const bmpFontWhite = assets.getBitmap("fw");
+        const bmpFontYellow = assets.getBitmap("fy");
+    
+        const w = canvas.width;
+        const h = canvas.height;
+
+        // Clear background with solid color
+        canvas.fillColor("#000000");
+        canvas.fillRect(0, 0, w, h);
+        
+        // Semi-transparent overlay
+        canvas.fillColor("#00000088");
+        canvas.fillRect(0, 0, w, h);
+
+        // Title
+        canvas.drawText(bmpFontYellow, "LEADERBOARD", w/2, 20, -1, 0, TextAlign.Center);
+        
+        // Load leaderboard data only once
+        if (!this.leaderboardLoaded) {
+            this.leaderboardLoaded = true;
+            this.getFunticoLeaderboard().then(leaderboard => {
+                // Handle both array and object with numeric keys
+                if (Array.isArray(leaderboard)) {
+                    this.cachedLeaderboard = leaderboard;
+                } else if (typeof leaderboard === 'object' && leaderboard !== null) {
+                    // Convert object with numeric keys to array
+                    this.cachedLeaderboard = Object.values(leaderboard);
+                } else {
+                    this.cachedLeaderboard = [];
+                }
+            }).catch(error => {
+                console.error('Error loading leaderboard:', error);
+                this.cachedLeaderboard = [];
+            });
+        }
+        
+        // Draw cached leaderboard data
+        if (this.cachedLeaderboard.length === 0) {
+            // No leaderboard data available
+            canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w/2, h/2 - 10, -1, 0, TextAlign.Center);
+            canvas.drawText(bmpFontWhite, "Login to submit scores", w/2, h/2 + 5, -1, 0, TextAlign.Center);
+        } else {
+            // Draw leaderboard entries
+            let y = 60;
+            for (const entry of this.cachedLeaderboard) {
+                const nameText = entry.user?.username || 'Unknown User';
+                const scoreText = entry.score?.toString().padStart(5, ' ') || '0';
+                
+                // Highlight current user if logged in
+                if (this.isLoggedIn() && entry.user?.username === this.getCurrentUsername()) {
+                    canvas.fillColor("#ffff0033");
+                    canvas.fillRect(20, y - 2, w - 40, 10);
+                }
+                
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
+                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                y += 15;
+            }
+        }
+
+        // Instructions
+        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
     }
 
     private drawTransition(canvas : Canvas) : void {
@@ -494,12 +559,17 @@ export class Game implements Scene {
             // Handle leaderboard
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
-                this.showLeaderboard = !this.showLeaderboard;
+                this.leaderboardScreen = true;
+                this.showLeaderboard = false;
                 // Reset cache when opening leaderboard
-                if (this.showLeaderboard) {
-                    this.leaderboardLoaded = false;
-                    this.cachedLeaderboard = [];
-                }
+                this.leaderboardLoaded = false;
+                this.cachedLeaderboard = [];
+            }
+            
+            // Handle back to menu from leaderboard
+            if (this.leaderboardScreen && event.input.getAction("leaderboard") == InputState.Pressed) {
+                event.audio.playSample(event.assets.getSample("as"), 0.60);
+                this.leaderboardScreen = false;
             }
             
             return;
@@ -531,12 +601,11 @@ export class Game implements Scene {
             // Handle leaderboard button in game over screen
             if (event.input.getAction("leaderboard") == InputState.Pressed) {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
-                this.showLeaderboard = !this.showLeaderboard;
+                this.leaderboardScreen = true;
+                this.showLeaderboard = false;
                 // Reset cache when opening leaderboard
-                if (this.showLeaderboard) {
-                    this.leaderboardLoaded = false;
-                    this.cachedLeaderboard = [];
-                }
+                this.leaderboardLoaded = false;
+                this.cachedLeaderboard = [];
             }
             
             return;
@@ -636,11 +705,11 @@ export class Game implements Scene {
 
         else if (this.titleScreenActive) {
 
-            this.drawTitleScreen(canvas, assets);
-            
-            // Draw leaderboard if active
-            if (this.showLeaderboard) {
-                this.drawLeaderboard(canvas, assets);
+            // Check if we're in leaderboard screen
+            if (this.leaderboardScreen) {
+                this.drawLeaderboardScreen(canvas, assets);
+            } else {
+                this.drawTitleScreen(canvas, assets);
             }
         }
 
