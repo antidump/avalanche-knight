@@ -229,9 +229,6 @@ export class Game {
         if (!this.leaderboardLoaded) {
             this.leaderboardLoaded = true;
             this.getFunticoLeaderboard().then(leaderboard => {
-                console.log('Raw leaderboard data:', leaderboard);
-                console.log('Is array?', Array.isArray(leaderboard));
-                console.log('Type:', typeof leaderboard);
                 // Handle both array and object with numeric keys
                 if (Array.isArray(leaderboard)) {
                     this.cachedLeaderboard = leaderboard;
@@ -239,32 +236,25 @@ export class Game {
                 else if (typeof leaderboard === 'object' && leaderboard !== null) {
                     // Convert object with numeric keys to array
                     this.cachedLeaderboard = Object.values(leaderboard);
-                    console.log('Converted to array:', this.cachedLeaderboard);
                 }
                 else {
                     this.cachedLeaderboard = [];
                 }
-                console.log('Final cached data:', this.cachedLeaderboard);
             }).catch(error => {
                 console.error('Error loading leaderboard:', error);
                 this.cachedLeaderboard = [];
             });
         }
         // Draw cached leaderboard data
-        console.log('Drawing leaderboard - cached data:', this.cachedLeaderboard);
-        console.log('Leaderboard length:', this.cachedLeaderboard.length);
         if (this.cachedLeaderboard.length === 0) {
             // No leaderboard data available
-            console.log('No leaderboard data - showing empty message');
             canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w / 2, h / 2 - 10, -1, 0, 1 /* TextAlign.Center */);
             canvas.drawText(bmpFontWhite, "Login to submit scores", w / 2, h / 2 + 5, -1, 0, 1 /* TextAlign.Center */);
         }
         else {
             // Draw leaderboard entries
-            console.log('Drawing leaderboard entries:', this.cachedLeaderboard.length);
             let y = 40;
             for (const entry of this.cachedLeaderboard) {
-                console.log('Drawing entry:', entry);
                 const nameText = entry.user.username;
                 const scoreText = entry.score.toString().padStart(5, ' ');
                 // Highlight current user if logged in
@@ -272,8 +262,8 @@ export class Game {
                     canvas.fillColor("#ffff0033");
                     canvas.fillRect(20, y - 2, w - 40, 10);
                 }
-                canvas.drawText(bmpFontWhite, nameText, 25, y);
-                canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
+                canvas.drawText(bmpFontYellow, nameText, 25, y);
+                canvas.drawText(bmpFontYellow, scoreText, w - 60, y);
                 y += 10;
             }
         }
