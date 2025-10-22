@@ -351,14 +351,20 @@ export class Game implements Scene {
         }
         
         // Draw cached leaderboard data
+        console.log('Drawing leaderboard - cached data:', this.cachedLeaderboard);
+        console.log('Leaderboard length:', this.cachedLeaderboard.length);
+        
         if (this.cachedLeaderboard.length === 0) {
             // No leaderboard data available
+            console.log('No leaderboard data - showing empty message');
             canvas.drawText(bmpFontYellow, "NO LEADERBOARD DATA", w/2, h/2 - 10, -1, 0, TextAlign.Center);
             canvas.drawText(bmpFontWhite, "Login to submit scores", w/2, h/2 + 5, -1, 0, TextAlign.Center);
         } else {
             // Draw leaderboard entries
+            console.log('Drawing leaderboard entries:', this.cachedLeaderboard.length);
             let y = 40;
             for (const entry of this.cachedLeaderboard) {
+                console.log('Drawing entry:', entry);
                 const nameText = entry.user.username;
                 const scoreText = entry.score.toString().padStart(5, ' ');
                 
