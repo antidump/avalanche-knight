@@ -344,6 +344,9 @@ export class Game {
                 canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
                 // Test with center alignment
                 canvas.drawText(bmpFontWhite, nameText, w / 2, y + 20, -1, 0, 1 /* TextAlign.Center */);
+                // Test with simple text
+                canvas.drawText(bmpFontYellow, "TEST", 25, y + 40);
+                canvas.drawText(bmpFontWhite, "TEST2", w / 2, y + 60, -1, 0, 1 /* TextAlign.Center */);
                 y += 40; // More space for test
             }
         }
