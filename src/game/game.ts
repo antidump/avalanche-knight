@@ -334,16 +334,21 @@ export class Game implements Scene {
         if (!this.leaderboardLoaded) {
             this.leaderboardLoaded = true;
             this.getFunticoLeaderboard().then(leaderboard => {
+                console.log('Raw leaderboard data:', leaderboard);
+                console.log('Is array?', Array.isArray(leaderboard));
+                console.log('Type:', typeof leaderboard);
+                
                 // Handle both array and object with numeric keys
                 if (Array.isArray(leaderboard)) {
                     this.cachedLeaderboard = leaderboard;
                 } else if (typeof leaderboard === 'object' && leaderboard !== null) {
                     // Convert object with numeric keys to array
                     this.cachedLeaderboard = Object.values(leaderboard);
+                    console.log('Converted to array:', this.cachedLeaderboard);
                 } else {
                     this.cachedLeaderboard = [];
                 }
-                console.log('Processed leaderboard data:', this.cachedLeaderboard);
+                console.log('Final cached data:', this.cachedLeaderboard);
             }).catch(error => {
                 console.error('Error loading leaderboard:', error);
                 this.cachedLeaderboard = [];
