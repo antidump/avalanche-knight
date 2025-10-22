@@ -234,11 +234,11 @@ export class Game {
                 // Draw leaderboard entries
                 let y = 40;
                 for (const entry of leaderboard) {
-                    const rankText = `#${entry.rank.toString().padStart(2, ' ')}`;
-                    const nameText = entry.name;
+                    const rankText = `#${entry.place.toString().padStart(2, ' ')}`;
+                    const nameText = entry.user.username;
                     const scoreText = entry.score.toString().padStart(5, ' ');
                     // Highlight current user if logged in
-                    if (this.isLoggedIn() && entry.name === this.getCurrentUsername()) {
+                    if (this.isLoggedIn() && entry.user.username === this.getCurrentUsername()) {
                         canvas.fillColor("#ffff0033");
                         canvas.fillRect(20, y - 2, w - 40, 10);
                     }
