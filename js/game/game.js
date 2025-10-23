@@ -115,11 +115,7 @@ export class Game {
             // ALL TEXT REMOVED FOR DEBUGGING
             canvas.drawText(fontYellow, "SCORE: " + scoreToString(this.player.getScore()), cx, 80, -1, 0, 1 /* TextAlign.Center */);
             canvas.drawText(fontYellow, "BEST: " + scoreToString(this.hiscore), cx, 96, -1, 0, 1 /* TextAlign.Center */);
-            // Show score submission status
-            if (this.scoreSubmissionStatus) {
-                const statusColor = this.scoreSubmitted ? "#00ff00" : "#ffff00";
-                canvas.drawText(fontYellow, this.scoreSubmissionStatus, cx, 112, -1, 0, 1 /* TextAlign.Center */);
-            }
+            // Score submission runs in background - no UI display
             // Show controls
             if (this.enterTimer >= 0.5) {
                 canvas.drawText(fontYellow, "ENTER: RESTART", cx, canvas.height - 20, -1, 0, 1 /* TextAlign.Center */);
@@ -230,8 +226,6 @@ export class Game {
         canvas.fillRect(0, 0, w, h);
         // Title
         canvas.drawText(bmpFontYellow, "LEADERBOARD", w / 2, 20, -1, 0, 1 /* TextAlign.Center */);
-        // Debug text to test rendering
-        canvas.drawText(bmpFontWhite, "TEST RENDERING", w / 2, 35, -1, 0, 1 /* TextAlign.Center */);
         // Load leaderboard data only once
         if (!this.leaderboardLoaded) {
             this.leaderboardLoaded = true;
@@ -278,15 +272,10 @@ export class Game {
                 // Test with different positions and fonts
                 canvas.drawText(bmpFontWhite, nameText, 25, y);
                 canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-                // Test with yellow font at different position
-                canvas.drawText(bmpFontYellow, nameText, 25, y + 15);
-                // Test with center alignment
-                canvas.drawText(bmpFontWhite, nameText, w / 2, y + 30, -1, 0, 1 /* TextAlign.Center */);
-                y += 25; // More space for test
+                y += 20; // Space between entries
             }
         }
-        // Instructions
-        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w / 2, h - 20, -1, 0, 1 /* TextAlign.Center */);
+        // Clean leaderboard display - no instructions
     }
     drawLeaderboardScreen(canvas, assets) {
         const bmpFontWhite = assets.getBitmap("fw");
@@ -333,28 +322,13 @@ export class Game {
             for (const entry of this.cachedLeaderboard) {
                 const nameText = entry.user?.username || 'Unknown User';
                 const scoreText = entry.score?.toString().padStart(5, ' ') || '0';
-                console.log('Drawing username:', nameText, 'at Y:', y);
-                console.log('nameText length:', nameText.length);
-                console.log('nameText type:', typeof nameText);
-                console.log('nameText value:', JSON.stringify(nameText));
-                // Highlight current user if logged in
-                if (this.isLoggedIn() && entry.user?.username === this.getCurrentUsername()) {
-                    canvas.fillColor("#ffff0033");
-                    canvas.fillRect(20, y - 2, w - 40, 10);
-                }
-                // Test with different fonts and positions
-                canvas.drawText(bmpFontYellow, nameText, 25, y);
+                // Draw username and score cleanly
+                canvas.drawText(bmpFontWhite, nameText, 25, y);
                 canvas.drawText(bmpFontWhite, scoreText, w - 60, y);
-                // Test with center alignment
-                canvas.drawText(bmpFontWhite, nameText, w / 2, y + 20, -1, 0, 1 /* TextAlign.Center */);
-                // Test with simple text
-                canvas.drawText(bmpFontYellow, "TEST", 25, y + 40);
-                canvas.drawText(bmpFontWhite, "TEST2", w / 2, y + 60, -1, 0, 1 /* TextAlign.Center */);
-                y += 40; // More space for test
+                y += 20; // Space between entries
             }
         }
-        // Instructions
-        canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w / 2, h - 20, -1, 0, 1 /* TextAlign.Center */);
+        // Clean leaderboard display - no instructions
     }
     async showLeaderboardPopup() {
         try {
