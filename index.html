@@ -4,94 +4,12 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Avalanche Knight</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="Icon.png">
     <!-- Funtico GameLoop SDK -->
     <!-- Funtico SDK -->
     <script src="https://funtico-frontend-js-sdk.pages.dev/funtico-sdk.min.js"></script>
 </head>
 <body style="overflow: hidden; background-color: black;">
-    <!-- Mobile Touch Controls -->
-    <div id="mobile-controls" style="
-        position: fixed;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-        height: 100px;
-        display: none;
-        z-index: 1000;
-        pointer-events: none;
-    ">
-        <!-- Left/Right Movement -->
-        <div style="
-            position: absolute;
-            left: 20px;
-            bottom: 20px;
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-            touch-action: none;
-        " id="left-btn">←</div>
-        
-        <div style="
-            position: absolute;
-            left: 100px;
-            bottom: 20px;
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-            touch-action: none;
-        " id="right-btn">→</div>
-        
-        <!-- Jump Button -->
-        <div style="
-            position: absolute;
-            right: 100px;
-            bottom: 20px;
-            width: 60px;
-            height: 60px;
-            background: rgba(0,255,0,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-            touch-action: none;
-        " id="jump-btn">↑</div>
-        
-        <!-- Attack Button -->
-        <div style="
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-            width: 60px;
-            height: 60px;
-            background: rgba(255,0,0,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-            touch-action: none;
-        " id="attack-btn">⚔</div>
-    </div>
-    
-    <script>
-        // Show mobile controls on touch devices
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            document.getElementById('mobile-controls').style.display = 'block';
-        }
-    </script>
     
     <script>
         // Handle Funtico OAuth callback - NO AUTO LOGIN
