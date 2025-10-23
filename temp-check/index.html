@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Avalanche Knight</title>
+    <link rel="icon" type="image/png" href="Icon.png">
+    <!-- Funtico GameLoop SDK -->
+    <!-- Funtico SDK -->
+    <script src="https://funtico-frontend-js-sdk.pages.dev/funtico-sdk.min.js"></script>
+</head>
+<body style="overflow: hidden; background-color: black;">
+    
+    <script>
+        // Handle Funtico OAuth callback - NO AUTO LOGIN
+        window.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+            
+            // ALWAYS CLEAN URL PARAMETERS TO PREVENT AUTO LOGIN
+            if (code || error) {
+                console.log('Cleaning URL parameters to prevent auto login');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    </script>
+    
+    <!-- Load all JavaScript files in order -->
+    <script src="js/common/math.js"></script>
+    <script src="js/common/vector.js"></script>
+    <script src="js/core/assets.js"></script>
+    <script src="js/core/event.js"></script>
+    <script src="js/core/input.js"></script>
+    <script src="js/core/program.js"></script>
+    <script src="js/core/scene.js"></script>
+    <script src="js/core/scenemanager.js"></script>
+    <script src="js/renderer/bitmap.js"></script>
+    <script src="js/renderer/canvas.js"></script>
+    <script src="js/renderer/sprite.js"></script>
+    <script src="js/audio/sample.js"></script>
+    <script src="js/audio/audioplayer.js"></script>
+    <script src="js/game/gameobject.js"></script>
+    <script src="js/game/existingobject.js"></script>
+    <script src="js/game/touchableobject.js"></script>
+    <script src="js/game/groundlayer.js"></script>
+    <script src="js/game/terrain.js"></script>
+    <script src="js/game/decoration.js"></script>
+    <script src="js/game/specialplatform.js"></script>
+    <script src="js/game/propeller.js"></script>
+    <script src="js/game/player.js"></script>
+    <script src="js/game/camera.js"></script>
+    <script src="js/game/assetgen.js"></script>
+    <script src="js/game/audiointro.js"></script>
+    <script src="js/game/game.js"></script>
+    <script src="js/funtico-sdk.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
