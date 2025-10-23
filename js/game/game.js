@@ -417,18 +417,7 @@ export class Game {
                 event.audio.playSample(event.assets.getSample("as"), 0.60);
                 this.handleLogin();
             }
-            // Handle leaderboard toggle
-            if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
-                event.audio.playSample(event.assets.getSample("as"), 0.60);
-                if (this.leaderboardScreen) {
-                    // Back to menu
-                    this.leaderboardScreen = false;
-                }
-                else {
-                    // Show leaderboard popup
-                    this.showLeaderboardPopup();
-                }
-            }
+            // Leaderboard handled globally - no need for separate handler here
             return;
         }
         if (!this.gameStarted) {
@@ -448,16 +437,12 @@ export class Game {
                 this.gameOverPhase = 0;
                 this.showLeaderboard = false;
             }
-            // Handle leaderboard button in game over screen
-            if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
-                event.audio.playSample(event.assets.getSample("as"), 0.60);
-                this.leaderboardScreen = true;
-                this.showLeaderboard = false;
-                // Reset cache when opening leaderboard
-                this.leaderboardLoaded = false;
-                this.cachedLeaderboard = [];
-            }
             return;
+        }
+        // Handle leaderboard button globally (works in all scenes)
+        if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
+            event.audio.playSample(event.assets.getSample("as"), 0.60);
+            this.showLeaderboardPopup();
         }
         if (this.gameOverPhase == 0 &&
             event.input.getAction("p") == 3 /* InputState.Pressed */) {
