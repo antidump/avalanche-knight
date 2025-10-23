@@ -4,13 +4,15 @@ Endless runner game with **fully functional** Funtico SDK integration for tourna
 
 ## ✅ Current Status
 
-**🎉 INTEGRATION COMPLETE & TESTED!**
+**🎉 READY FOR FUNTICO SUBMISSION!**
 
 - ✅ **Login/Authentication**: Working perfectly
 - ✅ **Score Submission**: Successfully submitting to Funtico leaderboard  
 - ✅ **User Session Management**: Auto-restore after login
+- ✅ **Global Leaderboard Access**: B button works in all scenes
+- ✅ **Clean UI**: No debug text or status messages
 - ✅ **Vercel Deployment**: Live at https://avalanche-knight.vercel.app/
-- ⚠️ **Leaderboard Display**: API returning 500 error (Funtico server issue)
+- ✅ **Zip Package**: Ready for Funtico Upload App submission
 
 ## 🚀 Quick Start
 
@@ -33,13 +35,15 @@ Endless runner game with **fully functional** Funtico SDK integration for tourna
 
 ## 🎯 Deployment Options
 
-### 🌟 **NEW: Funtico Upload App (Recommended)**
+### 🌟 **FUNTICO SUBMISSION (Ready!)**
 1. **Upload App**: https://upload.gameloop.funtico.com/
 2. **Password**: `1k9nw448WaEVRXt`
-3. **Instructions**: 
+3. **Package**: `avalanche-knight-funtico.zip` (ready for upload)
+4. **Instructions**: 
    - Upload zip file with `index.html` in root
    - Automatic hosting on Funtico infrastructure
    - No manual URL updates needed
+   - **Status**: ✅ Ready for submission
 
 ### Vercel (Current Live)
 - **Live URL**: https://avalanche-knight.vercel.app/
@@ -59,12 +63,16 @@ Endless runner game with **fully functional** Funtico SDK integration for tourna
 
 ## 📊 Features
 
-- ✅ **Funtico SDK Integration**: Complete
-- ✅ **OAuth2 Authentication**: Working
+- ✅ **Funtico SDK Integration**: Complete and tested
+- ✅ **OAuth2 Authentication**: Working perfectly
 - ✅ **Score Submission**: Successfully submitting scores
 - ✅ **User Session Auto-Restore**: After login redirect
-- ✅ **Real-time Score Feedback**: Shows submission status
+- ✅ **Global Leaderboard Access**: B button works in all scenes
+- ✅ **Clean UI**: No debug text or status messages
+- ✅ **Browser-native Alerts**: For login feedback and leaderboard
 - ✅ **Error Handling**: Proper error messages for API issues
+- ✅ **Mobile Support**: Responsive design
+- ✅ **Audio Integration**: Sound effects and music
 
 ## 🔧 Technical Details
 
@@ -82,19 +90,12 @@ const sdk = new FunticoSDK({
 - **Error handling**: Graceful handling of API errors
 - **Global access**: `window.funticoManager` available
 
-## 🐛 Known Issues
-
-### Leaderboard API Error
-- **Issue**: `500 Internal Server Error` from Funtico API
-- **Endpoint**: `/api/v1/core/gamejam/games/leaderboard`
-- **Status**: Funtico server issue (not our code)
-- **Workaround**: Upload to new Funtico Upload App may resolve
-
 ## 📞 Support
 
 - **Funtico Support**: gameloop@funtico.com
 - **Upload App**: https://upload.gameloop.funtico.com/
 - **Documentation**: https://js.demo.gameloop.funtico.com/
+- **Live Demo**: https://avalanche-knight.vercel.app/
 
 ------
 
