@@ -37,13 +37,32 @@ Endless runner game with **fully functional** Funtico SDK integration for tourna
 
 ### 🌟 **FUNTICO SUBMISSION (Ready!)**
 1. **Upload App**: https://upload.gameloop.funtico.com/
-2. **Password**: `1k9nw448WaEVRXt`
+2. **Password**: `xxxxxxxxxxx`
 3. **Package**: `avalanche-knight-funtico.zip` (ready for upload)
 4. **Instructions**: 
    - Upload zip file with `index.html` in root
    - Automatic hosting on Funtico infrastructure
    - No manual URL updates needed
    - **Status**: ✅ Ready for submission
+
+### 📋 **Installation Guide for Funtico Team**
+1. **Download**: `avalanche-knight-funtico.zip` from repository
+2. **Extract**: Unzip to any folder
+3. **Structure**: 
+   ```
+   avalanche-knight/
+   ├── index.html          (main entry point)
+   ├── js/                 (compiled JavaScript)
+   │   ├── main.js
+   │   ├── funtico-sdk.js
+   │   └── game/
+   ├── Icon.png           (game icon)
+   ├── cover.png          (game cover)
+   └── b.png, f.png       (game sprites)
+   ```
+4. **Deploy**: Upload to Funtico Upload App or host anywhere
+5. **Test**: Open `index.html` in browser
+6. **Features**: Login (L), Leaderboard (B), Gameplay (Arrow keys + Space)
 
 ### Vercel (Current Live)
 - **Live URL**: https://avalanche-knight.vercel.app/
@@ -90,12 +109,57 @@ const sdk = new FunticoSDK({
 - **Error handling**: Graceful handling of API errors
 - **Global access**: `window.funticoManager` available
 
+## 🧪 Testing Guide
+
+### Pre-deployment Testing
+1. **Local Testing**: Open `index.html` in browser
+2. **Login Test**: Press L → Should redirect to Funtico login
+3. **Gameplay Test**: Press Space → Start game, use Arrow keys
+4. **Leaderboard Test**: Press B → Should show popup with scores
+5. **Score Submission**: Play game → Score auto-submitted on game over
+
+### Funtico Integration Testing
+1. **Authentication**: Test login/logout flow
+2. **Score Submission**: Verify scores appear in leaderboard
+3. **Session Management**: Test auto-restore after redirect
+4. **Error Handling**: Test with network issues
+5. **Cross-browser**: Test on different browsers
+
+### Performance Testing
+- **Load Time**: Game should load within 3 seconds
+- **Memory Usage**: Should not exceed 50MB
+- **Frame Rate**: Should maintain 60fps on modern devices
+- **File Size**: Zip package is 106KB (well under limits)
+
+## 🔧 Troubleshooting
+
+### Common Issues
+1. **Game won't start**: Check browser console for errors
+2. **Login not working**: Verify Funtico SDK is loaded
+3. **Leaderboard empty**: Check Funtico API status
+4. **Audio not playing**: Enable audio in browser settings
+5. **Controls not responding**: Click on game area first
+
+### Browser Compatibility
+- ✅ **Chrome**: Fully supported
+- ✅ **Firefox**: Fully supported  
+- ✅ **Safari**: Fully supported
+- ✅ **Edge**: Fully supported
+- ✅ **Mobile browsers**: Responsive design
+
+### System Requirements
+- **Modern browser** with JavaScript enabled
+- **Audio support** (optional)
+- **Internet connection** for Funtico features
+- **No additional plugins** required
+
 ## 📞 Support
 
 - **Funtico Support**: gameloop@funtico.com
 - **Upload App**: https://upload.gameloop.funtico.com/
 - **Documentation**: https://js.demo.gameloop.funtico.com/
 - **Live Demo**: https://avalanche-knight.vercel.app/
+- **GitHub Issues**: Report bugs via GitHub repository
 
 ------
 
