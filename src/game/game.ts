@@ -531,6 +531,12 @@ export class Game implements Scene {
 
     public update(event : ProgramEvent) : void {
 
+        // Handle leaderboard button globally (works in ALL scenes)
+        if (event.input.getAction("leaderboard") == InputState.Pressed) {
+            event.audio.playSample(event.assets.getSample("as"), 0.60);
+            this.showLeaderboardPopup();
+        }
+
         const CLOUD_BASE_SPEED = 0.25;
         const CLOUD_SPEED_FACTOR = 0.125;
         const TRANSITION_SPEED = 1.0/30.0;
@@ -602,12 +608,6 @@ export class Game implements Scene {
             }
             
             return;
-        }
-
-        // Handle leaderboard button globally (works in all scenes)
-        if (event.input.getAction("leaderboard") == InputState.Pressed) {
-            event.audio.playSample(event.assets.getSample("as"), 0.60);
-            this.showLeaderboardPopup();
         }
 
         if (this.gameOverPhase == 0 &&

@@ -387,6 +387,11 @@ export class Game {
         this.oldFuel = updateSpeedAxis(this.oldFuel, this.player.getFuel(), 1.0 / 60.0 * event.tick);
     }
     update(event) {
+        // Handle leaderboard button globally (works in ALL scenes)
+        if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
+            event.audio.playSample(event.assets.getSample("as"), 0.60);
+            this.showLeaderboardPopup();
+        }
         const CLOUD_BASE_SPEED = 0.25;
         const CLOUD_SPEED_FACTOR = 0.125;
         const TRANSITION_SPEED = 1.0 / 30.0;
@@ -438,11 +443,6 @@ export class Game {
                 this.showLeaderboard = false;
             }
             return;
-        }
-        // Handle leaderboard button globally (works in all scenes)
-        if (event.input.getAction("leaderboard") == 3 /* InputState.Pressed */) {
-            event.audio.playSample(event.assets.getSample("as"), 0.60);
-            this.showLeaderboardPopup();
         }
         if (this.gameOverPhase == 0 &&
             event.input.getAction("p") == 3 /* InputState.Pressed */) {
