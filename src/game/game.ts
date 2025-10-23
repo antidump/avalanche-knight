@@ -508,10 +508,10 @@ export class Game implements Scene {
                 const rank = index + 1;
                 const username = entry.user?.username || 'Unknown User';
                 const score = entry.score || 0;
+                console.log(`Real leaderboard entry ${rank}: ${username} - ${score}`);
                 leaderboardText += `${rank}. ${username} - ${score}\n`;
             });
             
-            leaderboardText += "\nPress B to close";
             
             alert(leaderboardText);
             
