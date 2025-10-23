@@ -485,6 +485,42 @@ export class Game implements Scene {
         canvas.drawText(bmpFontYellow, "B: BACK TO MENU", w/2, h - 20, -1, 0, TextAlign.Center);
     }
 
+    private async showLeaderboardPopup() : Promise<void> {
+        try {
+            const leaderboard = await this.getFunticoLeaderboard();
+            
+            // Handle both array and object with numeric keys
+            let leaderboardData = [];
+            if (Array.isArray(leaderboard)) {
+                leaderboardData = leaderboard;
+            } else if (typeof leaderboard === 'object' && leaderboard !== null) {
+                leaderboardData = Object.values(leaderboard);
+            }
+            
+            if (leaderboardData.length === 0) {
+                alert("🏆 LEADERBOARD\n\nNo data available.\nLogin to submit scores!");
+                return;
+            }
+            
+            // Format leaderboard text
+            let leaderboardText = "🏆 LEADERBOARD\n\n";
+            leaderboardData.slice(0, 5).forEach((entry, index) => {
+                const rank = index + 1;
+                const username = entry.user?.username || 'Unknown User';
+                const score = entry.score || 0;
+                leaderboardText += `${rank}. ${username} - ${score}\n`;
+            });
+            
+            leaderboardText += "\nPress B to close";
+            
+            alert(leaderboardText);
+            
+        } catch (error) {
+            console.error('Error loading leaderboard:', error);
+            alert("🏆 LEADERBOARD\n\nError loading leaderboard.\nTry again later!");
+        }
+    }
+
     private drawTransition(canvas : Canvas) : void {
 
         if (this.transitionTimer <= 0)
@@ -581,12 +617,8 @@ export class Game implements Scene {
                     // Back to menu
                     this.leaderboardScreen = false;
                 } else {
-                    // Open leaderboard
-                    this.leaderboardScreen = true;
-                    this.showLeaderboard = false;
-                    // Reset cache when opening leaderboard
-                    this.leaderboardLoaded = false;
-                    this.cachedLeaderboard = [];
+                    // Show leaderboard popup
+                    this.showLeaderboardPopup();
                 }
             }
             
