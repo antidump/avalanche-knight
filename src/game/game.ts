@@ -469,13 +469,9 @@ export class Game implements Scene {
                 // Test with center alignment
                 canvas.drawText(bmpFontWhite, nameText, w/2, y + 20, -1, 0, TextAlign.Center);
                 
-                // Test with hardcoded username
-                canvas.drawText(bmpFontYellow, "gatotkoco", 25, y + 40);
-                canvas.drawText(bmpFontWhite, "gatotkoco", w/2, y + 60, -1, 0, TextAlign.Center);
-                
                 // Test with simple text
-                canvas.drawText(bmpFontYellow, "TEST", 25, y + 80);
-                canvas.drawText(bmpFontWhite, "TEST2", w/2, y + 100, -1, 0, TextAlign.Center);
+                canvas.drawText(bmpFontYellow, "TEST", 25, y + 40);
+                canvas.drawText(bmpFontWhite, "TEST2", w/2, y + 60, -1, 0, TextAlign.Center);
                 
                 y += 40; // More space for test
             }
