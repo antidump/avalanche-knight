@@ -1,4 +1,3 @@
 {
-  "buildCommand": "npm run build && npx webpack --mode production",
   "outputDirectory": "build"
 }
